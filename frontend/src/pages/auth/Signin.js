@@ -28,7 +28,7 @@ const Signin = () => {
   const navigate = useNavigate();
   const {
     currentUser,
-    error: errorMessage,
+    error,
     loading,
   } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -62,7 +62,7 @@ const Signin = () => {
       }
 
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("user", data.user);
 
       if (res.status === 200) {
         dispatch(signInSuccess(data));
@@ -145,7 +145,7 @@ const Signin = () => {
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid2>
-            {errorMessage && <p>{errorMessage}</p>}
+            {error && <p>{error}</p>}
           </Grid2>
         </Box>
       </Box>

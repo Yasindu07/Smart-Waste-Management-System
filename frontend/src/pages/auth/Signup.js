@@ -134,14 +134,14 @@ const Signup = () => {
           >
             {loading ? "Signing up..." : "Sign Up"}
           </Button>
-          <Grid2 container justifyContent="flex-end">
+          <Grid2 container justifyContent="center">
             <Grid2 item>
               <Link to="/auth/sign-in" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid2>
-            {errorMessage && <p>{errorMessage}</p>}
           </Grid2>
+            {errorMessage && <p>{errorMessage}</p>}
         </Box>
         <Snackbar
           open={openSnackbar}
