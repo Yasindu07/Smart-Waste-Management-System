@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import MenuIcon from '@mui/icons-material/Menu';
 import { logoutSuccess } from '../redux/user/userSlice';
 
+import logo from "../assets/images/no bg@4x.png";
+
 const Header = ({ handleSidebarToggle }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -38,6 +40,17 @@ const Header = ({ handleSidebarToggle }) => {
         display: { xs: 'block', md: 'none' }, // Drawer only on small screens
       }}/>
         </IconButton>
+        <Box
+          component="img"
+          sx={{
+            // height: 200,
+            width: 50,
+            maxHeight: { xs: 200, md: 300 },
+            maxWidth: { xs: 300, md: 400 },
+          }}
+          alt="Image description"
+          src={logo}
+        />
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Dashboard
         </Typography>

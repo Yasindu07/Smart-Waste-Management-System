@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
 import {
-  Avatar,
   Button,
   TextField,
   Grid2,
@@ -15,10 +16,12 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { Link, useNavigate } from "react-router-dom";
+
+import logo from "../../assets/images/no bg@4x.png";
+
 import { API_URL } from "../../config/config";
 
 const Signup = () => {
@@ -97,9 +100,17 @@ const Signup = () => {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
+        <Box
+          component="img"
+          sx={{
+            // height: 200,
+            width: 130,
+            maxHeight: { xs: 200, md: 300 },
+            maxWidth: { xs: 300, md: 400 },
+          }}
+          alt="Image description"
+          src={logo}
+        />
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>

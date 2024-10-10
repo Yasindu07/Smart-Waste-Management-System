@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import {
-  Avatar,
   Link as MuiLink,
   Button,
   TextField,
@@ -19,15 +18,17 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   signInFailure,
   signInStart,
   signInSuccess,
 } from "../../redux/user/userSlice";
+
+import logo from "../../assets/images/no bg@4x.png";
 
 import { API_URL } from "../../config/config";
 
@@ -77,7 +78,7 @@ const Signin = () => {
       }
 
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user",JSON.stringify(data.user));
+      localStorage.setItem("user", JSON.stringify(data.user));
 
       if (data.user.role === "admin") {
         dispatch(signInSuccess(data));
@@ -98,7 +99,7 @@ const Signin = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" sx={{ alignItems: "center" }}>
       <Box
         sx={{
           marginTop: 8,
@@ -107,9 +108,17 @@ const Signin = () => {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
+        <Box
+          component="img"
+          sx={{
+            // height: 200,
+            width: 130,
+            maxHeight: { xs: 200, md: 300 },
+            maxWidth: { xs: 300, md: 400 },
+          }}
+          alt="Image description"
+          src={logo}
+        />
         <Typography component="h1" variant="h5">
           Sign In
         </Typography>
@@ -199,7 +208,11 @@ const Signin = () => {
               </Link>
             </Grid2>
             <Grid2>
-              <MuiLink href="/auth/sign-up" variant="body2" color="secondary.dark">
+              <MuiLink
+                href="/auth/sign-up"
+                variant="body2"
+                color="secondary.dark"
+              >
                 <Typography color="secondary.dark">
                   {"Don't have an account? Sign Up"}
                 </Typography>
