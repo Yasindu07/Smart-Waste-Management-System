@@ -28,7 +28,10 @@ const Header = ({ handleSidebarToggle }) => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed" sx={{
+      zIndex: (theme) => theme.zIndex.drawer + 1, // Ensure the header is above the sidebar
+      boxShadow: 4,
+    }}>
       <Toolbar>
         <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleSidebarToggle}>
           <MenuIcon sx={{

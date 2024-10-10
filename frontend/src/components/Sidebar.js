@@ -67,7 +67,7 @@ const Sidebar = ({ open, onClose }) => {
   });
 
   return (
-    <List style={{ marginTop: '64px' }}>
+    <List style={{ marginTop: '70px' }}>
       {filteredSidebarItems.map((item) => (
         <ListItem
           key={item.path}
