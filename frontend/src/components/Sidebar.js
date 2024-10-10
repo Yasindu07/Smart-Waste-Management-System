@@ -1,48 +1,96 @@
-// components/Sidebar.js
 import React from 'react';
-import { Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import SettingsIcon from '@mui/icons-material/Settings';
+import { List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import DashboardIcon from '@mui/icons-material/Dashboard';    
 import ProfileIcon from '@mui/icons-material/AccountCircle';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import DeleteSweepSharpIcon from '@mui/icons-material/DeleteSweepSharp';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
+// Array for Sidebar Items
+const sidebarItems = [
+  {
+    label: 'Dashboard',
+    path: '/dashboard',
+    icon: <DashboardIcon />,
+    role: 'admin',
+  },
+  {
+    label: 'Waste Level',
+    path: '/dashboard/waste-level',
+    icon: <DeleteSweepSharpIcon />,
+    role: 'user',
+  },
+  {
+    label: 'Schedule',
+    path: '/dashboard/schedule',
+    icon: <CalendarTodayIcon />,
+    role: 'manager',
+  },
+  {
+    label: 'Current Waste',
+    path: '/dashboard/current-waste',
+    icon: <DeleteSweepSharpIcon />,
+    role: 'manager',
+  },
+  {
+    label: 'Assigned Schedule',
+    path: '/dashboard/assigned-schedule',
+    icon: <CalendarTodayIcon />,
+    role: 'collector',
+  },
+  {
+    label: 'Profile',
+    path: '/dashboard/profile',
+    icon: <ProfileIcon />,
+  },
+];
 
 const Sidebar = ({ open, onClose }) => {
-    const navigate = useNavigate();
-    const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { currentUser } = useSelector((state) => state.user); // Extracting the current user's role
 
+  // Handle navigation and close the sidebar
   const handleNavigation = (path) => {
     navigate(path);
-    onClose(); // Close the drawer after navigation
+    onClose();
   };
 
+  // Active path highlighting
   const isActive = (path) => location.pathname === path || (path === '/dashboard' && location.pathname === '/');
-  
-  return (
-    <Drawer anchor="left" open={open} onClose={onClose}>
-      <List>
-        <ListItem 
-          button 
-          onClick={() => handleNavigation('/dashboard')}
-          sx={{
-            backgroundColor: isActive('/dashboard') ? 'lightblue' : 'transparent',
-          }}
-        >
-          <ListItemIcon><DashboardIcon /></ListItemIcon>
-          <ListItemText primary="Dashboard" />
-        </ListItem>
 
-        <ListItem 
-          button 
-          onClick={() => handleNavigation('./profile')}
+  // Filter the sidebar items based on the current user's role
+  const filteredSidebarItems = sidebarItems.filter(item => {
+    // Show the item if there's no specific role restriction, or if it matches the user's role
+    return !item.role || item.role === currentUser.role;
+  });
+
+  return (
+    <List style={{ marginTop: '64px' }}>
+      {filteredSidebarItems.map((item) => (
+        <ListItem
+          key={item.path}
+          button
+          onClick={() => handleNavigation(item.path)}
           sx={{
-            backgroundColor: isActive('/dashboard/profile') ? 'lightblue' : 'transparent',
+            color: isActive(item.path) ? 'white' : 'text.primary',
+            backgroundColor: isActive(item.path) ? 'primary.main' : 'transparent',
+            cursor: 'pointer',
+            '&:hover': {
+              backgroundColor: isActive(item.path) ? 'primary.dark' : 'grey.200',
+            },
           }}
         >
-          <ListItemIcon><ProfileIcon /></ListItemIcon>
-          <ListItemText primary="Profile" />
+          <ListItemIcon
+            sx={{ color: isActive(item.path) ? 'white' : 'text.primary' }}
+          >
+            {item.icon}
+          </ListItemIcon>
+          <ListItemText primary={item.label} />
         </ListItem>
-      </List>
-    </Drawer>
+      ))}
+    </List>
   );
 };
 

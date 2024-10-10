@@ -9,8 +9,15 @@ import {
   Container,
   Snackbar,
   Alert,
+  OutlinedInput,
+  InputLabel,
+  FormControl,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Link, useNavigate } from "react-router-dom";
 import { API_URL } from "../../config/config";
 
@@ -24,6 +31,7 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,6 +43,15 @@ const Signup = () => {
       return;
     }
     setOpenSnackbar(false);
+  };
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const handleMouseUpPassword = (event) => {
+    event.preventDefault();
   };
 
   const handleSubmit = async (e) => {
@@ -80,7 +97,7 @@ const Signup = () => {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -112,18 +129,32 @@ const Signup = () => {
             onChange={handleChange}
           />
 
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="new-password"
-            value={formData.password}
-            onChange={handleChange}
-          />
+          <FormControl variant="outlined" fullWidth margin="normal">
+            <InputLabel htmlFor="outlined-adornment-password">
+              Password *
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              label="Password"
+              value={formData.password}
+              onChange={handleChange}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    onMouseUp={handleMouseUpPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
 
           <Button
             disabled={loading}
@@ -137,11 +168,12 @@ const Signup = () => {
           <Grid2 container justifyContent="center">
             <Grid2 item>
               <Link to="/auth/sign-in" variant="body2">
-                Already have an account? Sign in
+              <Typography color="secondary.dark">
+              Already have an account? Sign in</Typography>
               </Link>
             </Grid2>
           </Grid2>
-            {errorMessage && <p>{errorMessage}</p>}
+          {errorMessage && <p>{errorMessage}</p>}
         </Box>
         <Snackbar
           open={openSnackbar}
