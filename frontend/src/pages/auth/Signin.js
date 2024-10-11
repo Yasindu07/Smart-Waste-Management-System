@@ -108,7 +108,7 @@ const Signin = () => {
           alignItems: "center",
         }}
       >
-        <Box
+        {/* <Box
           component="img"
           sx={{
             // height: 200,
@@ -118,7 +118,7 @@ const Signin = () => {
           }}
           alt="Image description"
           src={logo}
-        />
+        /> */}
         <Typography component="h1" variant="h5">
           Sign In
         </Typography>

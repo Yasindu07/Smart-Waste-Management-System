@@ -20,7 +20,7 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-import logo from "../../assets/images/no bg@4x.png";
+// import logo from "../../assets/images/no bg@4x.png";
 
 import { API_URL } from "../../config/config";
 
@@ -100,7 +100,7 @@ const Signup = () => {
           alignItems: "center",
         }}
       >
-        <Box
+        {/* <Box
           component="img"
           sx={{
             // height: 200,
@@ -110,7 +110,7 @@ const Signup = () => {
           }}
           alt="Image description"
           src={logo}
-        />
+        /> */}
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
