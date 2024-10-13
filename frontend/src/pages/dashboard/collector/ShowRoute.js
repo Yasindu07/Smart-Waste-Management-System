@@ -240,7 +240,7 @@ const ShowRoute = () => {
   };
 
   return (
-    <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' ,mt:-3, mb:-7}}>
+    <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' ,mt:-3, mb:-7 , p:-3}}>
       {/* <CustomAppBar name="Pickup Route" showBackButton={true} showMenu={true} /> */}
 
       {/* Main Content */}

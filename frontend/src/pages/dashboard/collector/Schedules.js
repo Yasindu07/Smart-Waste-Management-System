@@ -13,30 +13,33 @@ import {
   Alert,
   Box,
   Tooltip,
+  ToggleButton,
+  ToggleButtonGroup,
 } from '@mui/material';
-import { padding, styled } from '@mui/system';
+import { styled } from '@mui/system';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-// import CustomAppBar from './CustomAppBar';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import ScaleIcon from '@mui/icons-material/Scale';
-import RecycleIcon from '@mui/icons-material/Scale';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
+import StarIcon from '@mui/icons-material/Star';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
-
-const StyledCard = styled(Card)(({ theme, status, datePassed }) => ({
+const StyledCard = styled(Card)(({ theme, status, special, datePassed }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
   height: 'auto',
   minHeight: '60px',
   backgroundColor:
-    datePassed && status === 'notdone'
-      ? '#f55d5d' // Red if overdue and not done
-      : status === 'done'
-      ? 'gray' // Green if done
-      : 'green', // Red if not done
+    special // High priority: Blue if it's marked as special
+      ? '#007bff'
+      : datePassed && status === 'notdone' // Red if overdue and not done
+      ? '#f55d5d'
+      : status === 'done' // Gray if done
+      ? 'gray'
+      : 'green', // Green for all other cases
   color: '#ffffff',
   boxShadow: theme.shadows[3],
   borderRadius: '16px',
@@ -51,78 +54,124 @@ const StyledCard = styled(Card)(({ theme, status, datePassed }) => ({
   },
 }));
 
-  const Schedules = () => {
-    const [schedules, setSchedules] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
-    const [expandedCard, setExpandedCard] = useState(null); // State to manage expanded cards
-  
-    const fetchSchedules = async () => {
-      try {
-        const res = await axios.get('http://localhost:5002/api/schedules');
-        const sortedSchedules = res.data.sort((a, b) => {
-          if (a.status === 'notdone' && b.status === 'done') return -1;
-          if (a.status === 'done' && b.status === 'notdone') return 1;
-          return 0;
-        });
-        setSchedules(sortedSchedules);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to fetch schedules.');
-        setLoading(false);
-      }
-    };
-  
-    useEffect(() => {
-      fetchSchedules();
-    }, []);
-  
-    const handleCardClick = (id) => {
-      setExpandedCard(expandedCard === id ? null : id); // Toggle expanded state
-    };
-  
-    if (loading)
-      return (
-        <Container maxWidth="md" sx={{ textAlign: 'center', marginTop: '30rem' }}>
+const Schedules = () => {
+  const [schedules, setSchedules] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [expandedCard, setExpandedCard] = useState(null);
+  const [filterStatus, setFilterStatus] = useState('all'); // State for status filter
+  const [filterSpecial, setFilterSpecial] = useState(false); // State for special filter
+  const [filterDatePassed, setFilterDatePassed] = useState(false); // State for datePassed filter
+
+  const fetchSchedules = async () => {
+    try {
+      const res = await axios.get('http://localhost:5002/api/schedules');
+      const sortedSchedules = res.data.sort((a, b) => {
+        if (a.status === 'notdone' && b.status === 'done') return -1;
+        if (a.status === 'done' && b.status === 'notdone') return 1;
+        return 0;
+      });
+      setSchedules(sortedSchedules);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch schedules.');
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSchedules();
+  }, []);
+
+  const handleCardClick = (id) => {
+    setExpandedCard(expandedCard === id ? null : id);
+  };
+
+  // Filter logic
+  const filteredSchedules = schedules.filter((schedule) => {
+    const currentDate = new Date();
+    const scheduleDate = new Date(schedule.time);
+    const datePassed = scheduleDate < currentDate; // Check if the date has passed
+
+    const statusMatch =
+      filterStatus === 'all' ||
+      (filterStatus === 'done' && schedule.status === 'done') ||
+      (filterStatus === 'notdone' && schedule.status === 'notdone');
+
+    const specialMatch = !filterSpecial || schedule.special;
+
+    const datePassedMatch = !filterDatePassed || datePassed;
+
+    return statusMatch && specialMatch && datePassedMatch;
+  });
+
+  const handleStatusChange = (event, newStatus) => {
+    if (newStatus !== null) {
+      setFilterStatus(newStatus);
+    }
+  };
+
+  return (
+    <Box>
+      <Container maxWidth="md" sx={{ marginTop: { xs: '2rem', md: '7rem' }, marginBottom: '2rem' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1rem' }}>
+          <ToggleButtonGroup
+            value={filterStatus}
+            exclusive
+            onChange={handleStatusChange}
+            aria-label="status filter"
+            sx={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}
+          >
+            <ToggleButton value="all" sx={{ color: 'white', backgroundColor: '#007bff', '&.Mui-selected': { backgroundColor: '#0056b3' } }}>
+              <Typography variant="body2">All</Typography>
+            </ToggleButton>
+            <ToggleButton value="done" sx={{ color: 'white', backgroundColor: 'gray', '&.Mui-selected': { backgroundColor: 'gray' } }}>
+              <CheckCircleIcon fontSize="small" sx={{ marginRight: '0.5rem' }} />
+              <Typography variant="body2">Done</Typography>
+            </ToggleButton>
+            <ToggleButton value="notdone" sx={{ color: 'white', backgroundColor: 'green', '&.Mui-selected': { backgroundColor: 'green' } }}>
+              <HourglassEmptyIcon fontSize="small" sx={{ marginRight: '0.5rem' }} />
+              <Typography variant="body2">Not Done</Typography>
+            </ToggleButton>
+          </ToggleButtonGroup>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginTop: '1rem' }}>
+            <Button
+              variant="contained"
+              onClick={() => setFilterSpecial((prev) => !prev)}
+              sx={{ backgroundColor: filterSpecial ? 'blue' : '#007bff', color: 'white' }}
+              startIcon={<StarIcon />}
+            >
+              {filterSpecial ? 'Show All' : 'Show Special'}
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => setFilterDatePassed((prev) => !prev)}
+              sx={{ backgroundColor: filterDatePassed ? '#ffc107' : '#f55d5d', color: 'white' }}
+              startIcon={<CalendarTodayIcon />}
+            >
+              {filterDatePassed ? 'Show All Dates' : 'Show Passed Dates'}
+            </Button>
+          </Box>
+        </Box>
+        {loading ? (
           <CircularProgress />
-          <Typography variant="h6" sx={{ marginTop: '1rem' }}>
-            Loading schedules...
-          </Typography>
-        </Container>
-      );
-  
-    if (error)
-      return (
-        <Container maxWidth="md" sx={{ marginTop: '2rem' }}>
+        ) : error ? (
           <Alert severity="error">{error}</Alert>
-        </Container>
-      );
-  
-    return (
-      <Box>
-        {/* <CustomAppBar name="Schedules" showBackButton={false} showMenu={true} /> */}
-        <Container maxWidth="md"    sx={{
-    marginTop: { xs: '2rem', md: '7rem' }, // responsive marginTop
-    marginBottom: '2rem' // fixed marginBottom
-  }}>
+        ) : (
           <Grid container spacing={1.5}>
-            {schedules.map((schedule) => {
+            {filteredSchedules.map((schedule) => {
               const currentDate = new Date();
               const scheduleDate = new Date(schedule.time);
-              const datePassed = scheduleDate < currentDate; // Check if the date has passed
-              const isExpanded = expandedCard === schedule._id; // Check if this card is expanded
-  
+              const datePassed = scheduleDate < currentDate;
+              const isExpanded = expandedCard === schedule._id;
+
               return (
-                <Grid 
-                  item 
-                  xs={12} // Full width on XS screens (list view)
-                  md={6} // Half width on MD and larger screens (grid view)
-                  key={schedule._id}
-                >
-                  <StyledCard 
-                    status={schedule.status} 
+                <Grid item xs={12} md={6} key={schedule._id}>
+                  <StyledCard
+                    status={schedule.status}
                     datePassed={datePassed}
-                    onClick={() => handleCardClick(schedule._id)} // Add click handler
+                    special={schedule.special}
+                    onClick={() => handleCardClick(schedule._id)}
                   >
                     <CardContent>
                       <Box display="flex" alignItems="center" mb={1}>
@@ -132,18 +181,17 @@ const StyledCard = styled(Card)(({ theme, status, datePassed }) => ({
                           <HourglassEmptyIcon fontSize="large" sx={{ marginRight: '0.5rem' }} />
                         )}
                         <Typography variant="h6" component="div">
-                          {new Date(schedule.time).toLocaleString([], { 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: 'numeric', 
-                            hour: '2-digit', 
-                            minute: '2-digit', 
-                            hour12: true 
+                          {new Date(schedule.time).toLocaleString([], {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: true,
                           })}
                         </Typography>
                         {datePassed && schedule.status === 'notdone' && (
                           <Tooltip title="This schedule is overdue!">
-                          
                             <WarningAmberIcon color="error" sx={{ marginLeft: '0.8rem' }} />
                           </Tooltip>
                         )}
@@ -154,7 +202,7 @@ const StyledCard = styled(Card)(({ theme, status, datePassed }) => ({
                           {schedule.address}
                         </Typography>
                       </Box>
-                      {isExpanded && ( // Show details only when expanded
+                      {isExpanded && (
                         <>
                           <Box display="flex" alignItems="center" mb={1}>
                             <Typography variant="body1" color="inherit">
@@ -185,13 +233,13 @@ const StyledCard = styled(Card)(({ theme, status, datePassed }) => ({
                         </>
                       )}
                     </CardContent>
-                    {isExpanded && ( // Show button only when expanded
+                    {isExpanded && (
                       <CardActions sx={{ justifyContent: 'flex-end', paddingRight: '1rem', paddingBottom: '1rem' }}>
                         <Button
                           variant="contained"
                           color="secondary"
                           component={Link}
-                          to={`/dashboard/show-route/${schedule._id}`} // Corrected path with 'dashboard'
+                          to={`/dashboard/show-route/${schedule._id}`}
                           sx={{ textTransform: 'none' }}
                         >
                           View Route
@@ -203,9 +251,10 @@ const StyledCard = styled(Card)(({ theme, status, datePassed }) => ({
               );
             })}
           </Grid>
-        </Container>
-      </Box>
-    );
-  };
-  
-  export default Schedules;
+        )}
+      </Container>
+    </Box>
+  );
+};
+
+export default Schedules;

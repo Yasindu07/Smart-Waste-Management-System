@@ -31,6 +31,10 @@ const ScheduleSchema = new mongoose.Schema({
     type: String, // Type of garbage (e.g., organic, recyclable, etc.)
     default: null, // Default to null if not provided
   },
+  special: {
+    type: Boolean,
+    default: false, // Defaults to false unless explicitly set to true
+  },
 }, {
   timestamps: true,
 });
