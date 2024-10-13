@@ -35,7 +35,7 @@ const Schedule = () => {
   const handleCloseModal = () => setOpenModal(false);
 
   return (
-    <div>
+    <div style={{ padding: "20px" }}>
       <h2>Current Waste Level</h2>
       <TableContainer component={Paper}>
         <Table>
