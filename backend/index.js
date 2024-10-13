@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 
-const PORT = 5000;
+const PORT = 5002;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
