@@ -6,23 +6,42 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-import { API_URL } from "../../config/config";
 import axios from "axios";
+import { API_URL } from "../../config/config";
 
-const AddTrucks = ({ open, handleClose }) => {
-  const [newTruck, setNewTruck] = useState({
-    brand: "",
-    numberPlate: "",
-    capacity: "",
-  });
+const UpdateTruck = ({ open, handleClose, truck }) => {
+  const [updatedTruck, setUpdatedTruck] = useState(truck);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewTruck((prevTruck) => ({
+    setUpdatedTruck((prevTruck) => ({
       ...prevTruck,
       [name]: value,
     }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.put(
+        `${API_URL}/truck/updatetruck/${updatedTruck._id}`,
+        updatedTruck,
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      const data = res.data;
+      if (data.success === false) {
+        setErrorMessage(data.message);
+      } else {
+        setErrorMessage(null);
+        handleClose();
+      }
+    } catch (error) {
+      setErrorMessage(error.response?.data?.message || error.message);
+    }
   };
 
   const modalStyle = {
@@ -37,35 +56,11 @@ const AddTrucks = ({ open, handleClose }) => {
     borderRadius: 2,
   };
 
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post(`${API_URL}/truck/addtrucks`, newTruck, {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
-      const data = res.data;
-      if (data.success === false) {
-        setErrorMessage(data.message);
-      } else if (data.statusCode === 500) {
-        setErrorMessage("Number plate already exists");
-      } else {
-        handleClose();
-        // Reset form
-        setNewTruck({ brand: "", numberPlate: "", capacity: "" });
-        setErrorMessage(null); // Clear error message after a successful submission
-      }
-    } catch (error) {
-      setErrorMessage(error.response?.data?.message || 'Number plate already exists');
-    }
-  };
-
   return (
     <Modal open={open} onClose={handleClose}>
       <Box sx={modalStyle}>
         <Typography variant="h6" component="h2">
-          Add a New Truck
+          Update Truck
         </Typography>
         {errorMessage && (
           <Typography color="error" align="center" mt={1} mb={2}>
@@ -76,20 +71,18 @@ const AddTrucks = ({ open, handleClose }) => {
           margin="dense"
           label="Truck Brand"
           name="brand"
-          required
           fullWidth
           variant="outlined"
-          value={newTruck.brand}
+          value={updatedTruck.brand}
           onChange={handleChange}
         />
         <TextField
           margin="dense"
           label="Number Plate"
           name="numberPlate"
-          required
           fullWidth
           variant="outlined"
-          value={newTruck.numberPlate}
+          value={updatedTruck.numberPlate}
           onChange={handleChange}
         />
         <TextField
@@ -97,10 +90,9 @@ const AddTrucks = ({ open, handleClose }) => {
           margin="dense"
           label="Capacity (kg)"
           name="capacity"
-          required
           fullWidth
           variant="outlined"
-          value={newTruck.capacity}
+          value={updatedTruck.capacity}
           onChange={handleChange}
         />
         <Box mt={2} display="flex" justifyContent="flex-end">
@@ -108,7 +100,7 @@ const AddTrucks = ({ open, handleClose }) => {
             Cancel
           </Button>
           <Button onClick={handleSubmit} color="primary">
-            Add Truck
+            Update Truck
           </Button>
         </Box>
       </Box>
@@ -116,4 +108,4 @@ const AddTrucks = ({ open, handleClose }) => {
   );
 };
 
-export default AddTrucks;
+export default UpdateTruck;

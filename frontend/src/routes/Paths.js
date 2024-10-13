@@ -20,4 +20,8 @@ export const DashBoardPaths = {
     TRUCKS: 'trucks',
     COLLECTORS: 'collectors',
     SPECIAL_COLLECTION: 'special-collection',
+    REQUEST_WASTE_DEVICE : 'request-device',
+    ORDER_PROCESS : 'order-process',
+    ALL_REQUESTS : 'request-list'
+
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Table,
@@ -8,31 +8,70 @@ import {
   TableHead,
   TableRow,
   Paper,
+  IconButton,
 } from "@mui/material";
+import { Edit, Delete } from "@mui/icons-material"
 import AddTrucks from "../../../components/admin/AddTrucks";
+import { API_URL } from "../../../config/config";
+import axios from "axios";
+import UpdateTruck from "../../../components/admin/UpdateTrucks";
+import DeleteTruckConfirmation from "../../../components/admin/DeleteTruckConfirmation";
 
 const Trucks = () => {
-  const [open, setOpen] = useState(false); // State to manage modal visibility
-  const [trucks, setTrucks] = useState([]); // List of trucks
+  const [open, setOpen] = useState(false); 
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [trucks, setTrucks] = useState([]);
+  const [selectedTruck, setSelectedTruck] = useState(null);
 
-  // Open the modal
+  useEffect(() => {
+    const fetchTrucks = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/truck/alltrucks`,{
+          withCredentials: true,
+        });
+        const data = res.data;
+        setTrucks(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchTrucks();
+  }, [open, openUpdate, openDelete]);
+
+ 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  // Close the modal
   const handleClose = () => {
     setOpen(false);
   };
 
-  // Add truck to the list
-  const handleAddTruck = (truck) => {
-    setTrucks([...trucks, truck]);
-    handleClose(); // Close the modal after adding truck
+  const handleOpenUpdate = (truck) => {
+    setSelectedTruck(truck);
+    setOpenUpdate(true);
   };
+
+  const handleCloseUpdate = () => {
+    setOpenUpdate(false);
+    setSelectedTruck(null);
+  };
+
+  const handleOpenDelete = (truck) => {
+    setSelectedTruck(truck);
+    setOpenDelete(true);
+  };
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+    setSelectedTruck(null);
+  };
+
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Smart Waste Management System</h1>
+      <h1 style={{marginBottom:30, textAlign: "center" }}>Manage Trucks</h1>
 
       {/* Add Truck Button */}
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
@@ -45,17 +84,32 @@ const Trucks = () => {
           <TableHead>
             <TableRow>
               <TableCell>Truck Name</TableCell>
+              <TableCell>Number Plate</TableCell>
               <TableCell>Capacity (kg)</TableCell>
-              <TableCell>Location</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {trucks.length > 0 ? (
               trucks.map((truck, index) => (
                 <TableRow key={index}>
-                  <TableCell>{truck.name}</TableCell>
-                  <TableCell>{truck.capacity}</TableCell>
-                  <TableCell>{truck.location}</TableCell>
+                  <TableCell>{truck.brand}</TableCell>
+                  <TableCell>{truck.numberPlate}</TableCell>
+                  <TableCell>{truck.capacity}</TableCell> 
+                  <TableCell>
+                    <IconButton
+                      color="primary"
+                      onClick={() => handleOpenUpdate(truck)}
+                    >
+                      <Edit />
+                    </IconButton>
+                    <IconButton
+                      color="secondary"
+                      onClick={() => handleOpenDelete(truck)}
+                    >
+                      <Delete />
+                    </IconButton>
+                  </TableCell>                
                 </TableRow>
               ))
             ) : (
@@ -73,8 +127,25 @@ const Trucks = () => {
       <AddTrucks
         open={open}
         handleClose={handleClose}
-        handleAddTruck={handleAddTruck}
       />
+
+      {/* Update Truck Modal */}
+      {selectedTruck && (
+        <UpdateTruck
+          open={openUpdate}
+          handleClose={handleCloseUpdate}
+          truck={selectedTruck}
+        />
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      {selectedTruck && (
+        <DeleteTruckConfirmation
+          open={openDelete}
+          handleClose={handleCloseDelete}
+          truck={selectedTruck}
+        />
+      )}
     </div>
   );
 };

@@ -31,7 +31,7 @@ const AddCollector = ({ open, handleClose, handleAddCollector }) => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open}>
       <DialogTitle>Add a New Collector</DialogTitle>
       <DialogContent>
         <TextField
@@ -48,6 +48,7 @@ const AddCollector = ({ open, handleClose, handleAddCollector }) => {
           label="Email"
           name="email"
           fullWidth
+          required
           variant="outlined"
           value={newCollector.email}
           onChange={handleChange}

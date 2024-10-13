@@ -10,7 +10,7 @@ const Profile = () => {
   return (
     <Paper 
       sx={{ 
-        padding: { xs: 2, sm: 4 },  // Smaller padding for mobile, larger for desktop
+        padding: { xs: 2, sm: 6 },  // Smaller padding for mobile, larger for desktop
         maxWidth: 800, 
         margin: 'auto', 
         backgroundColor: '#f9f9f9', 

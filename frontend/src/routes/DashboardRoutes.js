@@ -15,6 +15,9 @@ import Trucks from "../pages/dashboard/admin/Trucks";
 import Collectors from "../pages/dashboard/admin/Collectors";
 import SpecialCollection from "../pages/dashboard/user/SpecialCollection";
 import Collecting from "../pages/dashboard/collector/Collecting";
+import RequestTrackingDevice from "../pages/dashboard/user/Request_device"
+import OrderProcess from "../pages/dashboard/user/order_process";
+import AdminRequestsPage from "../pages/dashboard/admin/Device_Requests"
 
 const DashboardRoutes = () => {
   return (
@@ -30,6 +33,9 @@ const DashboardRoutes = () => {
       <Route path={DashBoardPaths.TRUCKS} element={<Trucks />} />
       <Route path={DashBoardPaths.COLLECTORS} element={<Collectors />} />
       <Route path={DashBoardPaths.SPECIAL_COLLECTION} element={<SpecialCollection />} />
+      <Route path={DashBoardPaths.REQUEST_WASTE_DEVICE} element={<RequestTrackingDevice />} />
+      <Route path={DashBoardPaths.ORDER_PROCESS} element={<OrderProcess />} />
+      <Route path={DashBoardPaths.ALL_REQUESTS} element={<AdminRequestsPage />} />
     </Routes>
   );
 };

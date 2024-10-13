@@ -8,6 +8,7 @@ import DeleteSweepSharpIcon from '@mui/icons-material/DeleteSweepSharp';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import SensorsIcon from '@mui/icons-material/Sensors';
 
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -63,10 +64,25 @@ const sidebarItems = [
     role: 'collector',
   },
   {
+    label: 'Waste Tracking Device',
+    path: '/dashboard/request-device',
+    icon: <SensorsIcon />,
+    role: 'user',
+  },
+
+  {
+    label: 'All Requests ',
+    path: '/dashboard/request-list',
+    icon: <SensorsIcon />,
+    role: 'admin',
+  },
+
+  {
     label: 'Profile',
     path: '/dashboard/profile',
     icon: <ProfileIcon />,
   },
+
 ];
 
 const Sidebar = ({ open, onClose }) => {
