@@ -4,6 +4,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/database.js";
 import authRoutes from "./routes/auth.route.js";
+import scheduleRoutes from "./routes/schedule.route.js"; 
+
 
 dotenv.config();
 connectDB();
@@ -13,13 +15,14 @@ app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 
-const PORT = 5000;
+const PORT = 5002;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
  
 app.use('/api/auth',authRoutes);
+app.use('/api/schedules', scheduleRoutes);
 
 
 app.use((err,req,res,next) => {

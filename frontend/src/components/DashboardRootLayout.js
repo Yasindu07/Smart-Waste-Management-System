@@ -58,7 +58,7 @@ const DashboardRootLayout = () => {
             {/* Main Content Area */}
             <Box sx={{ flexGrow: 1, ml: isMediumUp ? '250px' : 0}}> {/* Add margin-left when sidebar is persistent */}
                 <Header handleSidebarToggle={handleSidebarToggle} />
-                <Box component="main" sx={{ p: 3,backgroundColor:'secondary.light', height: '100vh', overflow: 'auto', paddingTop: '80px' }}>
+                <Box component="main" sx={{ backgroundColor:'secondary.light', height: '100%', overflow: 'auto', paddingTop: '80px' }}>
                     <Outlet />
                 </Box>
             </Box>
