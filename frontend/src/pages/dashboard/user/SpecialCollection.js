@@ -53,7 +53,7 @@ const SpecialCollection = () => {
         borderRadius: 2,
         backgroundColor: "white",
         '@media (min-width: 768px)': {
-          maxWidth: 600, // Adjusts for larger screens
+          maxWidth: 600,
         }
       }}
     >
@@ -80,10 +80,11 @@ const SpecialCollection = () => {
           justifyContent: "center",
           alignItems: "center",
           border: "1px dashed gray",
-          height: 150,
           width: 150,
+          height: 150,
           cursor: "pointer",
-          margin: "0 auto", // Centers the image uploader
+          margin: "0 auto",  // Centers the image uploader
+          overflow: "hidden",  // Ensures content inside is cropped if larger
         }}
       >
         <input
@@ -100,10 +101,9 @@ const SpecialCollection = () => {
                 src={image}
                 alt="Uploaded"
                 style={{
-                  maxWidth: "100%",
-                  maxHeight: "100%",
-                  objectFit: "cover",
-                  borderRadius: 4, // Rounded corners for better UI
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",  // Ensures the image fits the container
                 }}
               />
             ) : (
