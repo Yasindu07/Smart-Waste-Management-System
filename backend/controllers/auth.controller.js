@@ -51,13 +51,26 @@ export const signin = async (req,res,next) => {
         const token = jwt.sign({
             id: validateUser._id,
             role: validateUser.role
-        },process.env.JWT_SECRET, { expiresIn: '1h' });
+        },process.env.JWT_SECRET);
 
         const { password: userPassword, ...rest } = validateUser._doc;
 
-        res.json({ token, user: rest });
+        res.cookie('access_token', token, {
+            httpOnly: true
+        }).status(200).json({ token, user: rest });
     } catch (error) {
         next(error);
     }
 }
+
+export const signout = (req, res, next) => {
+    try {
+      res
+        .clearCookie("access_token")
+        .status(200)
+        .json("User has been signed out");
+    } catch (error) {
+      next(error);
+    }
+};
 

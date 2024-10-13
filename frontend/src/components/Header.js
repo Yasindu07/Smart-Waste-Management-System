@@ -16,6 +16,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { logoutSuccess } from "../redux/user/userSlice";
 
 import logo from "../assets/images/white-logo.png";
+import axios from "axios";
+import { API_URL } from "../config/config";
 
 const Header = ({ handleSidebarToggle }) => {
   const { currentUser } = useSelector((state) => state.user);
@@ -32,11 +34,27 @@ const Header = ({ handleSidebarToggle }) => {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    dispatch(logoutSuccess());
-    handleMenuClose();
+  const handleLogout = async () => {
+    try {
+      const res = await axios.post(
+        `${API_URL}/auth/signout`,
+        {},
+        {
+          withCredentials: true, // Include credentials if needed for cookie handling
+        }
+      );
+      const data = res.data;
+      if (data.success) {
+        console.log(data.message);
+      } else {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        dispatch(logoutSuccess());
+        handleMenuClose();
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (

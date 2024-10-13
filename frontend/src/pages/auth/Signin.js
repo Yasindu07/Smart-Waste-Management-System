@@ -67,6 +67,7 @@ const Signin = () => {
 
       const res = await axios.post(`${API_URL}/auth/signin`, formData, {
         headers: { "Content-Type": "application/json" },
+        withCredentials: true,
       });
 
       const data = res.data;
