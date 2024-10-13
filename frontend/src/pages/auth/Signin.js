@@ -28,7 +28,6 @@ import {
   signInSuccess,
 } from "../../redux/user/userSlice";
 
-import logo from "../../assets/images/no bg@4x.png";
 
 import { API_URL } from "../../config/config";
 

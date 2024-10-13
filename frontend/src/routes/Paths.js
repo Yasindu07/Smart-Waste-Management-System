@@ -14,4 +14,7 @@ export const DashBoardPaths = {
     CURRENT_WASTE: 'current-waste',
     COLLECTOR_ASSIGNED_SCHEDULE: 'assigned-schedule',
     USER_WASTE_LEVEL: 'waste-level',
+    TRUCKS: 'trucks',
+    COLLECTORS: 'collectors',
+    SPECIAL_COLLECTION: 'special-collection',
 }

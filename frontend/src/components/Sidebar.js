@@ -1,9 +1,14 @@
 import React from 'react';
+
 import { List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';    
 import ProfileIcon from '@mui/icons-material/AccountCircle';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DeleteSweepSharpIcon from '@mui/icons-material/DeleteSweepSharp';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -16,9 +21,27 @@ const sidebarItems = [
     role: 'admin',
   },
   {
+    label: 'Trucks',
+    path: '/dashboard/trucks',
+    icon: <LocalShippingIcon />,
+    role: 'admin',
+  },
+  {
+    label: 'Collectors',
+    path: '/dashboard/collectors',
+    icon: <GroupAddIcon />,
+    role: 'admin',
+  },
+  {
     label: 'Waste Level',
     path: '/dashboard/waste-level',
     icon: <DeleteSweepSharpIcon />,
+    role: 'user',
+  },
+  {
+    label: 'Special Collection',
+    path: '/dashboard/special-collection',
+    icon: <LibraryAddIcon />,
     role: 'user',
   },
   {
