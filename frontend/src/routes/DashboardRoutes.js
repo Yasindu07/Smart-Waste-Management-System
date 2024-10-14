@@ -6,7 +6,6 @@ import { DashBoardPaths } from "./Paths";
 import Profile from "../pages/dashboard/Profile";
 import CurrentWaste from "../pages/dashboard/manager/CurrentWaste";
 import Schedule from "../pages/dashboard/manager/Schedule";
-import AssignedSchedule from "../pages/dashboard/collector/AssignedSchedule";
 import Schedules from "../pages/dashboard/collector/Schedules";
 import ShowRoute from "../pages/dashboard/collector/ShowRoute";
 import QRScan from "../pages/dashboard/collector/QRScan"; 
