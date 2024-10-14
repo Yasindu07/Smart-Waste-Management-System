@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';    
 import ProfileIcon from '@mui/icons-material/AccountCircle';
@@ -9,7 +8,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import SensorsIcon from '@mui/icons-material/Sensors';
-
+import HistoryIcon from '@mui/icons-material/History';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -69,18 +68,22 @@ const sidebarItems = [
     icon: <SensorsIcon />,
     role: 'user',
   },
-
   {
     label: 'All Requests ',
     path: '/dashboard/request-list',
     icon: <SensorsIcon />,
     role: 'admin',
   },
-
   {
     label: 'Profile',
     path: '/dashboard/profile',
     icon: <ProfileIcon />,
+  },
+  {
+    label: 'Collection History',
+    path: '/dashboard/special-collection-history',
+    icon: <HistoryIcon/>,
+    role: 'user',
   },
 
 ];
