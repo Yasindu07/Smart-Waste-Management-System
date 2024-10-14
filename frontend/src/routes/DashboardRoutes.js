@@ -19,7 +19,8 @@ import RequestTrackingDevice from "../pages/dashboard/user/Request_device";
 import OrderProcess from "../pages/dashboard/user/order_process";
 import AdminRequestsPage from "../pages/dashboard/admin/Device_Requests";
 import AddSchedule from "../pages/dashboard/manager/AddSchedule";
-import SpecialCollectionHistory from "../pages/dashboard/user/SpecialCollectionHistory"
+import SpecialCollectionHistory from "../pages/dashboard/user/SpecialCollectionHistory";
+import FilteredRequests   from   "../pages/dashboard/user/Request_history";
 
 const DashboardRoutes = () => {
   return (
@@ -40,6 +41,8 @@ const DashboardRoutes = () => {
       <Route path={DashBoardPaths.ORDER_PROCESS} element={<OrderProcess />} />
       <Route path={DashBoardPaths.ALL_REQUESTS} element={<AdminRequestsPage />} />
       <Route path={DashBoardPaths.SPECIAL_COLLECTION_HISTORY} element={<SpecialCollectionHistory />} />
+      <Route path={DashBoardPaths.REQUEST_HISTORY} element={<FilteredRequests />} />
+
 
 
     </Routes>

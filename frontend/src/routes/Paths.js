@@ -25,5 +25,6 @@ export const DashBoardPaths = {
     ORDER_PROCESS : 'order-process',
     ALL_REQUESTS : 'request-list',
     SPECIAL_COLLECTION_HISTORY: 'special-collection-history',
+    REQUEST_HISTORY : 'request-history',
 
 }

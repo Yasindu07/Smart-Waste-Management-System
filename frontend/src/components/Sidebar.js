@@ -86,6 +86,18 @@ const sidebarItems = [
     role: 'user',
   },
 
+  {
+    label: 'Requests History',
+    path: '/dashboard/request-history',
+    icon: <HistoryIcon/>,
+    role: 'user',
+  },
+
+
+
+
+
+
 ];
 
 const Sidebar = ({ open, onClose }) => {
