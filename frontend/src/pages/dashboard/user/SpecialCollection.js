@@ -14,6 +14,7 @@ import {
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import axios from "axios";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { API_URL } from "../../../config/config";
 import { storage } from "../../../firebaseConfig"; // Adjust the path as necessary
 
 const SpecialCollection = () => {
@@ -78,7 +79,7 @@ const SpecialCollection = () => {
   const saveSpecialCollection = async (formData) => {
     try {
       const response = await axios.post(
-        "http://localhost:5002/api/specialCollection/add",
+        `${API_URL}/specialCollection/add`,
         formData
       );
       console.log("Data saved successfully: ", response.data);
