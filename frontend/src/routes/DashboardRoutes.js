@@ -19,7 +19,7 @@ import RequestTrackingDevice from "../pages/dashboard/user/Request_device";
 import OrderProcess from "../pages/dashboard/user/order_process";
 import AdminRequestsPage from "../pages/dashboard/admin/Device_Requests";
 import AddSchedule from "../pages/dashboard/manager/AddSchedule";
-
+import EditSchedule from "../pages/dashboard/manager/EditSchedule";
 const DashboardRoutes = () => {
   return (
     <Routes>
@@ -27,6 +27,7 @@ const DashboardRoutes = () => {
       <Route path={DashBoardPaths.SCHEDULE} element={<Schedule />} />
       <Route path={DashBoardPaths.CURRENT_WASTE} element={<CurrentWaste />} />
       <Route path={DashBoardPaths.COLLECTOR_ASSIGNED_SCHEDULE} element={<Schedules />} />
+      <Route path={DashBoardPaths.SHEDULE_EDIT} element={<EditSchedule />} />
       <Route path={DashBoardPaths.ADDSCHEDULE} element={<AddSchedule />} />
       <Route path={DashBoardPaths.COLLECTION_ROUTE} element={<ShowRoute />} />
       <Route path={DashBoardPaths.COLLECTION_VERIFY} element={<QRScan />} />

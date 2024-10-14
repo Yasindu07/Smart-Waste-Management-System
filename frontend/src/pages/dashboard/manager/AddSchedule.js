@@ -77,7 +77,7 @@ const AddSchedule = () => {
   return (
     <Container maxWidth="sm">
       <Paper elevation={3} sx={{ padding: 4, marginTop: 4 }}>
-        <Typography variant="h4" align="center" gutterBottom>
+        <Typography variant="h6" align="center" gutterBottom>
           Add Schedule
         </Typography>
         <form onSubmit={handleSubmit}>

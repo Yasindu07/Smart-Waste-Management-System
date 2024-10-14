@@ -22,20 +22,46 @@ export const createSchedule = async (req, res, next) => {
   }
 };
 
-// Update schedule status
+// Update schedule with additional fields
 export const updateSchedule = async (req, res, next) => {
-  try {
-    const { status, weight, type, garbageCollectorId } = req.body;
-    const updatedSchedule = await Schedule.findByIdAndUpdate(
-      req.params.id,
-      { status, weight, type, garbageCollectorId },
-      { new: true }
-    );
-    res.json(updatedSchedule);
-  } catch (error) {
-    next(error);
-  }
-};
+    try {
+      const {
+        status,
+        weight,
+        type,
+        garbageCollectorId,
+        time,
+        address,
+        code,
+        special,
+        truckNumber,
+      } = req.body;
+  
+      // Convert weight to a number or set it to null if not provided
+      const updatedWeight = weight ? Number(weight) : null;
+  
+      const updatedSchedule = await Schedule.findByIdAndUpdate(
+        req.params.id,
+        {
+          status,
+          weight: updatedWeight,
+          type,
+          garbageCollectorId,
+          time,
+          address,
+          code,
+          special,
+          truckNumber,
+        },
+        { new: true }
+      );
+  
+      // Respond with the updated schedule
+      res.json(updatedSchedule);
+    } catch (error) {
+      next(error);
+    }
+  };
 
 // Get a schedule by ID
 export const getScheduleById = async (req, res, next) => {

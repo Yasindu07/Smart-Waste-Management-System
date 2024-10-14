@@ -31,7 +31,7 @@ const Collecting = () => {
     const typeString = selectedTypes.join(', '); // Combine selected types into a string
 
     try {
-      await axios.put(`http://localhost:5002/api/schedules/${id}`, {
+      await axios.put(`http://localhost:5002/api/schedules/update/${id}`, {
         status: 'done',
         weight,
         type: typeString,
@@ -42,7 +42,7 @@ const Collecting = () => {
       
       // Redirect to schedules page after success
       setTimeout(() => {
-        navigate('/schedules');
+        navigate('/dashboard/assigned-schedule');
       }, 2000);
     } catch (err) {
       console.error('Error updating schedule:', err);
