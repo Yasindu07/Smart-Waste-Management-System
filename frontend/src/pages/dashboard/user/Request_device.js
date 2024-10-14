@@ -2,13 +2,9 @@ import React, { useState } from 'react';
 import { Button, TextField, Typography, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Box } from '@mui/material';
 import SensorsIcon from '@mui/icons-material/Sensors';
 import axios from 'axios'; // Import axios to make API calls
-import { useNavigate } from 'react-router-dom'; // 
 import { useSelector } from "react-redux";
 
-
 const RequestTrackingDevice = () => {
-
-
     const { currentUser } = useSelector((state) => state.user);
     const user = currentUser;
     const [address, setAddress] = useState('');
@@ -16,12 +12,10 @@ const RequestTrackingDevice = () => {
     const [error, setError] = useState(''); // State for error messages
     const [successMessage, setSuccessMessage] = useState(''); // State for success messages
 
-    console.log(currentUser)
-
-    const navigate = useNavigate(); // Initialize navigate
-
-    // Generate a random waste level between 0 and 100
-    const randomWasteLevel = Math.floor(Math.random() * 101);
+    // Remove navigation
+    // const navigate = useNavigate(); // Initialize navigate
+        // Generate a random waste level between 0 and 100
+        const randomWasteLevel = Math.floor(Math.random() * 101);
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent the default form submission behavior
@@ -47,10 +41,8 @@ const RequestTrackingDevice = () => {
             if (response.data.success) {
                 setSuccessMessage('Request submitted successfully!');
 
-                // Navigate to Order Process page
-                navigate('/dashboard/order-process');
-
-
+                // Remove navigation
+                // navigate('/dashboard/order-process');
             }
         } catch (error) {
             // Handle any errors

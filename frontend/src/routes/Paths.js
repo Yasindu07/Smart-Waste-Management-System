@@ -24,6 +24,8 @@ export const DashBoardPaths = {
     SPECIAL_COLLECTION: 'special-collection',
     REQUEST_WASTE_DEVICE : 'request-device',
     ORDER_PROCESS : 'order-process',
-    ALL_REQUESTS : 'request-list'
+    ALL_REQUESTS : 'request-list',
+    SPECIAL_COLLECTION_HISTORY: 'special-collection-history',
+    REQUEST_HISTORY : 'request-history',
 
 }

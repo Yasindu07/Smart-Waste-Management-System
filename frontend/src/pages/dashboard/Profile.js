@@ -12,16 +12,28 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { API_URL } from "../../config/config";
-import { updateFailure, updateStart, updateSuccess } from "../../redux/user/userSlice";
+import {
+  updateFailure,
+  updateStart,
+  updateSuccess,
+} from "../../redux/user/userSlice";
+import CustomSnackbar from "../../components/CustomSnackbar";
 
 const Profile = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, error } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false); // Track API call status
   const [formData, setFormData] = useState({
     phone: "",
     address: "",
     nic: "",
   });
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
 
   const dispatch = useDispatch();
 
@@ -34,18 +46,19 @@ const Profile = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res =await axios.put(
+      const res = await axios.put(
         `${API_URL}/user/completeprofile/${currentUser._id}`,
-        formData ,
+        formData,
         { withCredentials: true } // Send cookies for authentication
       );
       const data = res.data;
-      
+
       if (data.success === false) {
         dispatch(updateFailure(data.message));
+      } else {
+        dispatch(updateSuccess(data.user));
+        setOpenSnackbar(true);
       }
-      dispatch(updateSuccess(data.user));
-      alert("Profile completed successfully!");
     } catch (error) {
       dispatch(updateFailure(error.response?.data?.message || error.message));
     } finally {
@@ -138,6 +151,11 @@ const Profile = () => {
                   />
                 </Grid2>
               </Grid2>
+              {error && (
+                <Typography alignContent={"center"} color="error">
+                  {error}
+                </Typography>
+              )}
               <Button
                 type="submit"
                 variant="contained"
@@ -195,6 +213,12 @@ const Profile = () => {
           </Grid2>
         )}
       </Grid2>
+      <CustomSnackbar
+        open={openSnackbar}
+        onClose={handleCloseSnackbar}
+        message={"Profile updated successfully"}
+        severity={"success"}
+      />
     </Paper>
   );
 };
