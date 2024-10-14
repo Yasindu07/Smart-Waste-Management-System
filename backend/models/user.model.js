@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         default: "user",
+    },
+    isCompleted: {
+        type: Boolean,
+        default: false,
     }
 }, {timestamps : true});
 

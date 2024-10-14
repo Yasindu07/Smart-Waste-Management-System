@@ -10,19 +10,21 @@ import {
 import axios from "axios";
 import { API_URL } from "../../config/config";
 
-const DeleteTruckConfirmation = ({ open, handleClose, truck }) => {
-  const handleDelete = async () => {
+const DeleteTruckConfirmation = ({ open, handleClose, truck, success }) => {
+  const handleDelete = async (e) => {
     try {
       await axios.delete(`${API_URL}/truck/deletetruck/${truck._id}`, {
         withCredentials: true,
       });
       handleClose();
+      success();
     } catch (error) {
       console.error("Failed to delete truck", error);
     }
   };
 
   return (
+    <>
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Delete Truck</DialogTitle>
       <DialogContent>
@@ -31,7 +33,7 @@ const DeleteTruckConfirmation = ({ open, handleClose, truck }) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="secondary">
+        <Button onClick={handleClose} color="secondary.text">
           Cancel
         </Button>
         <Button onClick={handleDelete} color="primary">
@@ -39,6 +41,7 @@ const DeleteTruckConfirmation = ({ open, handleClose, truck }) => {
         </Button>
       </DialogActions>
     </Dialog>
+    </>
   );
 };
 
