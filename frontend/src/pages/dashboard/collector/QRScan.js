@@ -89,9 +89,33 @@ const QRScan = () => {
           </Alert>
         )}
 
-        <Button onClick={() => navigate('/schedules')} sx={styles.button}>
-          Go Back
-        </Button>
+<Button
+  onClick={() => navigate('/dashboard/assigned-schedule')}
+  type="submit"
+  variant="contained"
+  color="success"
+  size="large"
+  fullWidth
+  sx={{
+    paddingY: 1.5,
+    borderRadius: 2,
+    boxShadow: 3,
+    fontSize: '1.1rem',
+    mb: -10,
+    mt: 30,
+    // Styles for small screens (XS)
+    '@media (max-width: 600px)': {
+      width: '100%', // Full width on XS screens
+    },
+    // Styles for larger screens
+    '@media (min-width: 600px)': {
+      width: 'auto', // Reduce width for larger screens
+      maxWidth: '300px', // Set a max width for the button
+    },
+  }}
+>
+  Go Back
+</Button>
       </Box>
     </Box>
   );
@@ -150,14 +174,9 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     marginBottom: '20px',
-  },
-  button: {
-    backgroundColor: '#388e3c',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#2e7d32',
-    },
-  },
+  }
+ 
 };
 
 export default QRScan;
+

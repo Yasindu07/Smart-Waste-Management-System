@@ -5,6 +5,7 @@ import EcoIcon from '@mui/icons-material/Recycling';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import RecyclingIcon from '@mui/icons-material/Recycling';
 import { styled } from '@mui/system';
+import logo from "../../assets/images/ecobin.png";
 
 const features = [
   {
@@ -37,9 +38,21 @@ const Home = () => {
       {/* Header Section */}
       <BackgroundBox boxShadow={8}>
         <Container maxWidth="lg">
-          <Typography variant="h2" gutterBottom>
-            EcoBin
-          </Typography>
+        <Box
+  component="img"
+  sx={{
+    p: 0.2,
+    // Adjust the height and width for different screen sizes
+    height: { xs: 100, md: 150 }, // Smaller height for XS, larger for MD
+    width: { xs: 'auto', md: 'auto' }, // Smaller width for XS, larger for MD
+    maxHeight: { xs: 100, md: 400 }, // Max height for XS and MD screens
+    maxWidth: { xs: 150, md: 400 }, 
+    
+    mb:3// Max width for XS and MD screens
+  }}
+  alt="Image description"
+  src={logo}
+/>
           <Typography variant="h3" gutterBottom>
             Smart Waste Management System
           </Typography>

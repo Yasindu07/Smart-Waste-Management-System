@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import ResponsiveAppBar from "./ResponsiveAppBar";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -99,7 +100,9 @@ const Signin = () => {
   };
 
   return (
+    <Box>  <ResponsiveAppBar/>
     <Container component="main" maxWidth="xs" sx={{ alignItems: "center" }}>
+    
       <Box
         sx={{
           marginTop: 8,
@@ -221,7 +224,7 @@ const Signin = () => {
           </Grid2>
         </Box>
       </Box>
-    </Container>
+    </Container></Box>
   );
 };
 

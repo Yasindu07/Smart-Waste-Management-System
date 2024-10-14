@@ -19,6 +19,7 @@ import {
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import ResponsiveAppBar from "./ResponsiveAppBar";
 
 // import logo from "../../assets/images/no bg@4x.png";
 
@@ -90,7 +91,7 @@ const Signup = () => {
       setErrorMessage(error.message || "An error occurred");
     }
   };
-  return (
+  return (<Box><ResponsiveAppBar/>
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
@@ -207,7 +208,7 @@ const Signup = () => {
           </Alert>
         </Snackbar>
       </Box>
-    </Container>
+    </Container></Box>
   );
 };
 
