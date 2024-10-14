@@ -114,6 +114,13 @@ const Signup = () => {
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
+        <Grid2 container justifyContent="center" sx={{ mt: 1 }}>
+          {errorMessage && (
+            <Typography alignContent={"center"} color="error">
+              {errorMessage}
+            </Typography>
+          )}
+        </Grid2>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
           <TextField
             margin="normal"
@@ -184,7 +191,6 @@ const Signup = () => {
               </Link>
             </Grid2>
           </Grid2>
-          {errorMessage && <p>{errorMessage}</p>}
         </Box>
         <Snackbar
           open={openSnackbar}

@@ -27,7 +27,7 @@ const Collectors = () => {
     const fetchCollectors = async () => {
       setLoading(true); // Start loading
       try {
-        const res = await axios.get(`${API_URL}/user/getcollectors`, {
+        const res = await axios.get(`${API_URL}/user/getusers?role=collector`, {
           withCredentials: true,
         });
         const data = res.data;
@@ -40,7 +40,7 @@ const Collectors = () => {
     };
 
     fetchCollectors();
-  }, []);
+  }, [open]);
 
   // Open the modal
   const handleClickOpen = () => {

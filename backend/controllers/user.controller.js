@@ -37,9 +37,15 @@ export const addCollector = async (req,res,next) => {
     }
 }
 
-export const getCollectors = async (req, res, next) => {
+export const getUsersByRole = async (req, res, next) => {
+    const { role } = req.query; 
+
     if (req.user.role !== "admin") {
-        return next(errorHandler(403, "You are not allowed to add a collector"));
+        return next(errorHandler(403, "You are not allowed to access this resource"));
+    }
+
+    if (!role) {
+        return next(errorHandler(400, "Role is required"));
     }
     try {
         const collectors = await User.find({ role: "collector" });
