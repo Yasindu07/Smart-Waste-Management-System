@@ -11,17 +11,24 @@ import {
   CircularProgress,
   Box,
   TablePagination,
+  IconButton,
 } from "@mui/material";
 import AddCollector from "../../../components/admin/AddCollectors";
 import { API_URL } from "../../../config/config";
 import axios from "axios";
+import { Delete } from "@mui/icons-material";
+import CustomSnackbar from "../../../components/CustomSnackbar";
+import DeleteCollectorConfirmation from "../../../components/admin/DeleteCollectorConfirmation";
 
 const Collectors = () => {
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [collectors, setCollectors] = useState([]); 
+  const [selectedCollectors, setSelectedCollectors] = useState(null);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0); 
   const [rowsPerPage, setRowsPerPage] = useState(10); 
+  const [openSnackbarDelete, setOpenSnackbarDelete] = useState(false);
 
   useEffect(() => {
     const fetchCollectors = async () => {
@@ -40,15 +47,35 @@ const Collectors = () => {
     };
 
     fetchCollectors();
-  }, [open]);
+  }, [open, openDelete]);
 
-  
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbarDelete(false);
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleOpenDelete = (collector) => {
+    setSelectedCollectors(collector);
+    setOpenDelete(true);
+  };
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+    setSelectedCollectors(null);
+  };
+
+  const successfulDelete = () => {
+    setOpenSnackbarDelete(true);
   };
 
   // Handle page change
@@ -92,6 +119,7 @@ const Collectors = () => {
                   <TableCell>NIC</TableCell>
                   <TableCell>Phone</TableCell>
                   <TableCell>Address</TableCell>
+                  <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -103,6 +131,14 @@ const Collectors = () => {
                       <TableCell>{collector.nic}</TableCell>
                       <TableCell>{collector.phone}</TableCell>
                       <TableCell>{collector.address}</TableCell>
+                      <TableCell>
+                        <IconButton
+                          color="error"
+                          onClick={() => handleOpenDelete(collector)}
+                        >
+                          <Delete />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   ))
                 ) : (
@@ -130,6 +166,21 @@ const Collectors = () => {
 
       {/* Modal for adding collectors */}
       <AddCollector open={open} handleClose={handleClose} />
+
+      {selectedCollectors && (
+        <DeleteCollectorConfirmation
+          open={openDelete}
+          handleClose={handleCloseDelete}
+          collector={selectedCollectors}
+          success={successfulDelete}
+        />
+      )}
+      <CustomSnackbar
+        open={openSnackbarDelete}
+        onClose={handleCloseSnackbar}
+        message={"Collector deleted successfully"}
+        severity={"success"}
+      />
     </div>
   );
 };

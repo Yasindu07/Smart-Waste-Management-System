@@ -38,7 +38,7 @@ export const addUsers = async (req,res,next) => {
         if (existingUser) {
             return next(errorHandler(400, 'User with this email or username already exists'));
         }
-        
+
         await newUser.save();
         res.json(`${role.charAt(0).toUpperCase() + role.slice(1)} added successfully`);
     } catch (error) {
@@ -98,6 +98,26 @@ export const completeProfile = async (req, res, next) => {
 
         const { password, ...rest } = updatedUser._doc;
         res.status(200).json({ message: "Profile updated successfully", user: rest });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const deleteUser = async (req, res, next) => {
+    if (req.user.role !== "admin") {
+        return next(errorHandler(403, "You are not allowed to delete a user"));
+    }
+
+    const userId = req.params.userId;
+
+    try {
+        const deletedUser = await User.findByIdAndDelete(userId);
+
+        if (!deletedUser) {
+            return next(errorHandler(404, "User not found"));
+        }
+
+        res.json("User deleted successfully");
     } catch (error) {
         next(error);
     }

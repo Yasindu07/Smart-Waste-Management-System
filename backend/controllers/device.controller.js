@@ -34,3 +34,12 @@ export const getDevices = async (req, res, next) => {
     }
 }
 
+export const getAllDevices = async (req, res, next) => {
+    try {
+        const devices = await Device.find();
+        res.json(devices);
+    } catch (error) {
+        next(error);
+    }
+}
+
