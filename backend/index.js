@@ -7,7 +7,8 @@ import authRoutes from "./routes/auth.route.js";
 import scheduleRoutes from "./routes/schedule.route.js";
 import truckRoutes from "./routes/truck.route.js";
 import userRoutes from "./routes/user.route.js";
-import requestTrackingDeviceRoutes from "./routes/requestDevice.route.js";
+import specialCollectionRoutes from "./routes/specialCollection.route.js";
+
 
 dotenv.config();
 connectDB();
@@ -30,7 +31,7 @@ app.use('/api/auth',authRoutes);
 app.use('/api/schedules', scheduleRoutes);
 app.use('/api/truck',truckRoutes);
 app.use('/api/user',userRoutes);
-app.use('/api/device', requestTrackingDeviceRoutes);
+app.use('/api/specialCollection',specialCollectionRoutes);
 
 
 app.use((err,req,res,next) => {

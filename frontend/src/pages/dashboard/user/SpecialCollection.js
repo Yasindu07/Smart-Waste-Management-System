@@ -1,3 +1,4 @@
+// src/components/SpecialCollection.js
 import React, { useState } from "react";
 import {
   Button,
@@ -8,33 +9,101 @@ import {
   FormControl,
   Box,
   IconButton,
+  LinearProgress,
 } from "@mui/material";
-
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import axios from "axios";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "../../../firebaseConfig"; // Adjust the path as necessary
 
 const SpecialCollection = () => {
   const [wasteType, setWasteType] = useState("");
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
   const [emergencyCollection, setEmergencyCollection] = useState("");
   const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [progress, setProgress] = useState(0);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    let downloadURL = null;
+
+    // Check for image upload
+    if (imageFile) {
+      const storageRef = ref(storage, `special-collections/${imageFile.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+      try {
+        // Wait for the upload to complete
+        await new Promise((resolve, reject) => {
+          uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+              const prog = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              setProgress(prog);
+            },
+            (error) => {
+              console.error("Image upload error: ", error);
+              setErrorMessage("Image upload failed.");
+              reject(error);
+            },
+            async () => {
+              downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+              resolve();
+            }
+          );
+        });
+      } catch (error) {
+        console.error("Error during image upload: ", error);
+        return; // Early exit if there's an error
+      }
+    }
+
+    // Prepare form data
     const formData = {
       wasteType,
-      date,
-      description,
+      chooseDate: date,
+      wasteDescription: description,
       emergencyCollection,
-      image,
+      wasteImage: downloadURL || null,
     };
-    console.log(formData);
+
+    // Submit form data to backend
+    await saveSpecialCollection(formData);
+  };
+
+  // Axios call to save data
+  const saveSpecialCollection = async (formData) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5002/api/specialCollection/add",
+        formData
+      );
+      console.log("Data saved successfully: ", response.data);
+      // Reset the form fields
+      setWasteType("");
+      setDate("");
+      setDescription("");
+      setEmergencyCollection("");
+      setImage(null);
+      setImageFile(null);
+      setProgress(0);
+      setErrorMessage(""); // Reset error message after successful submission
+    } catch (error) {
+      console.error("Error saving data: ", error);
+      setErrorMessage("Failed to save data. Please try again.");
+    }
   };
 
   // Handle image upload
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
-    setImage(URL.createObjectURL(file));
+    if (file) {
+      setImage(URL.createObjectURL(file)); // Create a preview of the image
+      setImageFile(file);
+    }
   };
 
   return (
@@ -52,9 +121,9 @@ const SpecialCollection = () => {
         boxShadow: 3,
         borderRadius: 2,
         backgroundColor: "white",
-        '@media (min-width: 768px)': {
+        "@media (min-width: 768px)": {
           maxWidth: 600,
-        }
+        },
       }}
     >
       {/* Select Waste Type */}
@@ -69,7 +138,8 @@ const SpecialCollection = () => {
           <MenuItem value="Organic">Organic</MenuItem>
           <MenuItem value="Plastic">Plastic</MenuItem>
           <MenuItem value="Metal">Metal</MenuItem>
-          <MenuItem value="E-waste">E-waste</MenuItem>
+          <MenuItem value="Electronic">Electronic</MenuItem>
+          <MenuItem value="Hazardous">Hazardous</MenuItem>
         </Select>
       </FormControl>
 
@@ -83,8 +153,8 @@ const SpecialCollection = () => {
           width: 150,
           height: 150,
           cursor: "pointer",
-          margin: "0 auto",  // Centers the image uploader
-          overflow: "hidden",  // Ensures content inside is cropped if larger
+          margin: "0 auto", // Centers the image uploader
+          overflow: "hidden", // Ensures content inside is cropped if larger
         }}
       >
         <input
@@ -103,7 +173,7 @@ const SpecialCollection = () => {
                 style={{
                   width: "100%",
                   height: "100%",
-                  objectFit: "cover",  // Ensures the image fits the container
+                  objectFit: "cover", // Ensures the image fits the container
                 }}
               />
             ) : (
@@ -145,6 +215,12 @@ const SpecialCollection = () => {
         onChange={(e) => setEmergencyCollection(e.target.value)}
         required
       />
+
+      {/* Progress Bar */}
+      {progress > 0 && <LinearProgress variant="determinate" value={progress} />}
+
+      {/* Error Message */}
+      {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
 
       {/* Submit Button */}
       <Button
