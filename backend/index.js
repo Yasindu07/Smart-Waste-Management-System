@@ -8,6 +8,8 @@ import scheduleRoutes from "./routes/schedule.route.js";
 import truckRoutes from "./routes/truck.route.js";
 import userRoutes from "./routes/user.route.js";
 import specialCollectionRoutes from "./routes/specialCollection.route.js";
+import requestTrackingDeviceRoutes from "./routes/requestDevice.route.js";
+
 
 
 dotenv.config();
@@ -32,6 +34,7 @@ app.use('/api/schedules', scheduleRoutes);
 app.use('/api/truck',truckRoutes);
 app.use('/api/user',userRoutes);
 app.use('/api/specialCollection',specialCollectionRoutes);
+app.use('/api/device', requestTrackingDeviceRoutes);
 
 
 app.use((err,req,res,next) => {
