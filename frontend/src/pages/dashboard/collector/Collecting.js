@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, Alert, Grid, FormControl, FormGroup, FormControlLabel, Checkbox, Chip } from '@mui/material';
+import { Box, Typography, TextField, Button, Alert, Grid, FormControl, FormGroup, FormControlLabel, Radio, RadioGroup, Chip } from '@mui/material';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 // import CustomAppBar from './CustomAppBar'; // Adjust path as needed
@@ -13,14 +13,12 @@ const Collecting = () => {
   const { currentUser } = useSelector((state) => state.user); // Get current user from Redux store
   const navigate = useNavigate();
   const [weight, setWeight] = useState('');
-  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [selectedType, setSelectedType] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
-  const handleTypeChange = (type) => {
-    setSelectedTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
-    );
+  const handleTypeChange = (event) => {
+    setSelectedType(event.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -28,15 +26,12 @@ const Collecting = () => {
     setMessage('');
     setError('');
 
-    const typeString = selectedTypes.join(', '); // Combine selected types into a string
-
     try {
       await axios.put(`http://localhost:5002/api/schedules/update/${id}`, {
         status: 'done',
         weight,
-        type: typeString,
+        type: selectedType,
         garbageCollectorId: currentUser.username,
-        // Pass user ID to the backend
       });
       setMessage('Schedule updated successfully!');
       
@@ -68,7 +63,9 @@ const Collecting = () => {
           component="form"
           onSubmit={handleSubmit}
           sx={{
-            padding : {xs: 5 , md: 10}
+            padding: { xs: 5, md: 10 },
+            width: '100%', // Full width for the form
+            maxWidth: '600px', // Limit max width
           }}
         >
           <Grid container spacing={2}>
@@ -89,47 +86,29 @@ const Collecting = () => {
             <Grid item xs={12}>
               <FormControl component="fieldset">
                 <Typography variant="body1" sx={{ marginBottom: '8px', fontWeight: 'bold', color: 'gray' }}>
-                  Select Types
+                  Select Type
                 </Typography>
-                <FormGroup row>
+                <RadioGroup row value={selectedType} onChange={handleTypeChange}>
                   <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={selectedTypes.includes('Organic')}
-                        onChange={() => handleTypeChange('Organic')}
-                        icon={<GrassIcon />}
-                        checkedIcon={<GrassIcon color="primary" />}
-                      />
-                    }
+                    value="Organic"
+                    control={<Radio icon={<GrassIcon />} checkedIcon={<GrassIcon color="primary" />} />}
                     label="Organic"
                   />
                   <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={selectedTypes.includes('NonRecycle')}
-                        onChange={() => handleTypeChange('NonRecycle')}
-                        icon={<DeleteSweepIcon />}
-                        checkedIcon={<DeleteSweepIcon color="primary" />}
-                      />
-                    }
+                    value="NonRecycle"
+                    control={<Radio icon={<DeleteSweepIcon />} checkedIcon={<DeleteSweepIcon color="primary" />} />}
                     label="NonRecycle"
                   />
                   <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={selectedTypes.includes('Recycle')}
-                        onChange={() => handleTypeChange('Recycle')}
-                        icon={<RecyclingIcon />}
-                        checkedIcon={<RecyclingIcon color="primary" />}
-                      />
-                    }
+                    value="Recycle"
+                    control={<Radio icon={<RecyclingIcon />} checkedIcon={<RecyclingIcon color="primary" />} />}
                     label="Recycle"
                   />
-                </FormGroup>
+                </RadioGroup>
               </FormControl>
             </Grid>
 
-            {selectedTypes.length > 0 && (
+            {selectedType && (
               <Grid item xs={12}>
                 <Box
                   sx={{
@@ -140,39 +119,46 @@ const Collecting = () => {
                   }}
                 >
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                    Selected Types:
+                    Selected Type:
                   </Typography>
-                  {selectedTypes.map((type) => (
-                    <Chip
-                      key={type}
-                      label={type}
-                      sx={{
-                        backgroundColor: '#4caf50',
-                        color: '#ffffff',
-                      }}
-                      onDelete={() => handleTypeChange(type)}
-                    />
-                  ))}
+                  <Chip
+                    label={selectedType}
+                    sx={{
+                      backgroundColor: '#4caf50',
+                      color: '#ffffff',
+                    }}
+                  />
                 </Box>
               </Grid>
             )}
 
-            <Grid item xs={12} sx={{ textAlign: 'center' }}>
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{
-                  backgroundColor: '#388e3c',
-                  color: '#fff',
-                  paddingX: '32px',
-                  paddingY: '8px',
-                  '&:hover': {
-                    backgroundColor: '#2e7d32',
-                  },
-                }}
-              >
-                Submit
-              </Button>
+            <Grid item xs={12} sx={{ textAlign: 'center', marginTop: 'auto' }}>
+            <Button
+  type="submit"
+  variant="contained"
+  color="success"
+  size="large"
+  fullWidth
+  sx={{
+    paddingY: 1.5,
+    borderRadius: 2,
+    boxShadow: 3,
+    fontSize: '1.1rem',
+    mb: -20,
+    mt: 38,
+    // Styles for small screens (XS)
+    '@media (max-width: 600px)': {
+      width: '100%', // Full width on XS screens
+    },
+    // Styles for larger screens
+    '@media (min-width: 600px)': {
+      width: 'auto', // Reduce width for larger screens
+      maxWidth: '300px', // Set a max width for the button
+    },
+  }}
+>
+  Submit
+</Button>
             </Grid>
 
             {message && (
