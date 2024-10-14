@@ -22,7 +22,11 @@ const SpecialCollectionSchema = new mongoose.Schema(
         emergencyCollection: {
             type: String,
             required: true,
-        }
+        },
+        wasteStatus: {
+            type: String,
+            default: "Pending",
+        },
     }, 
     { timestamps: true }
 );
