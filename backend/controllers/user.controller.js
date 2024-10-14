@@ -2,14 +2,20 @@ import User from "../models/user.model.js";
 import bcryptjs from 'bcryptjs'
 import { errorHandler } from "../utils/error.js";
 
-export const addCollector = async (req,res,next) => {
+export const addUsers = async (req,res,next) => {
     if (req.user.role !== "admin") {
         return next(errorHandler(403, "You are not allowed to add a collector"));
     }
+    const { role } = req.query;
     const { username, email, nic, phone, address } = req.body;
 
     if(!username || !email || !nic || !phone || !address || username === '' || email === '' || nic === '' || phone === '' || address === ''){
         next(errorHandler(400,"All fields are required"));
+    }
+
+    const allowedRoles = ['collector', 'manager'];
+    if (!role || !allowedRoles.includes(role)) {
+        return next(errorHandler(400, 'Invalid or missing role'));
     }
 
     const hashedPassword = bcryptjs.hashSync(nic, 10);
@@ -21,23 +27,29 @@ export const addCollector = async (req,res,next) => {
         phone,
         address,
         password: hashedPassword,
-        role: "collector",
+        role
     })
 
     try {
-        const existingUserEmail = await User.findOne({ email });
-        const existingUsername = await User.findOne({ username });
-        if (existingUserEmail || existingUsername) {
-            return next(errorHandler(400, "User already exists"));
+        const existingUser = await User.findOne({
+            $or: [{ email }, { username }],
+        });
+
+        if (existingUser) {
+            return next(errorHandler(400, 'User with this email or username already exists'));
         }
+        
         await newUser.save();
-        res.json("colloctor added successfully");
+        res.json(`${role.charAt(0).toUpperCase() + role.slice(1)} added successfully`);
     } catch (error) {
         next(error);
     }
 }
 
 export const getUsersByRole = async (req, res, next) => {
+    if (req.user.role !== "admin") {
+        return next(errorHandler(403, "You are not allowed to access data"));
+    }
     const { role } = req.query; 
 
     if (req.user.role !== "admin") {
@@ -48,7 +60,7 @@ export const getUsersByRole = async (req, res, next) => {
         return next(errorHandler(400, "Role is required"));
     }
     try {
-        const collectors = await User.find({ role: "collector" });
+        const collectors = await User.find({ role });
 
         if (!collectors || collectors.length === 0) {
             return next(errorHandler(404, "No collectors found"));

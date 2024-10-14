@@ -16,7 +16,7 @@ export const DashBoardPaths = {
     COLLECTION_ROUTE: 'show-route/:id',
     COLLECTION_VERIFY: 'qr-scan/:id',
     SHEDULE_EDIT : 'edit-schedule/:id',
-     COLLECTING: 'collecting/:id/:scannedCode',
+    COLLECTING: 'collecting/:id/:scannedCode',
     ADDSCHEDULE: 'addShedule',
     USER_WASTE_LEVEL: 'waste-level',
     TRUCKS: 'trucks',
@@ -27,5 +27,5 @@ export const DashBoardPaths = {
     ALL_REQUESTS : 'request-list',
     SPECIAL_COLLECTION_HISTORY: 'special-collection-history',
     REQUEST_HISTORY : 'request-history',
-
+    MANAGER : 'managers',
 }

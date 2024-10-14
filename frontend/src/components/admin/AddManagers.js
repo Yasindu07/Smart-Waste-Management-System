@@ -10,8 +10,8 @@ import axios from "axios";
 import { API_URL } from "../../config/config";
 import CustomSnackbar from "../CustomSnackbar";
 
-const AddCollector = ({ open, handleClose }) => {
-  const [newCollector, setNewCollector] = useState({
+const AddManagers = ({ open, handleClose }) => {
+  const [newManager, setNewManager] = useState({
     username: "",
     email: "",
     nic: "",
@@ -31,7 +31,7 @@ const AddCollector = ({ open, handleClose }) => {
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewCollector((prevCollector) => ({
+    setNewManager((prevCollector) => ({
       ...prevCollector,
       [name]: value,
     }));
@@ -42,8 +42,8 @@ const AddCollector = ({ open, handleClose }) => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `${API_URL}/user/addUsers?role=collector`,
-        newCollector,
+        `${API_URL}/user/addUsers?role=manager`,
+        newManager,
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
@@ -59,7 +59,7 @@ const AddCollector = ({ open, handleClose }) => {
         setOpenSnackbar(true);
         setSuccessMessage(data);
         handleClose();
-        setNewCollector({
+        setNewManager({
           username: "",
           email: "",
           nic: "",
@@ -90,7 +90,7 @@ const AddCollector = ({ open, handleClose }) => {
     <Modal open={open} onClose={handleClose}>
       <Box sx={modalStyle}>
         <Typography variant="h6" component="h2">
-          Add a New Collector
+          Add a New Manager
         </Typography>
         {errorMessage && (
           <Typography color="error" align="center" mt={1} mb={2}>
@@ -103,7 +103,7 @@ const AddCollector = ({ open, handleClose }) => {
           name="username"
           fullWidth
           variant="outlined"
-          value={newCollector.username}
+          value={newManager.username}
           onChange={handleChange}
         />
         <TextField
@@ -113,7 +113,7 @@ const AddCollector = ({ open, handleClose }) => {
           fullWidth
           required
           variant="outlined"
-          value={newCollector.email}
+          value={newManager.email}
           onChange={handleChange}
         />
         <TextField
@@ -122,7 +122,7 @@ const AddCollector = ({ open, handleClose }) => {
           name="nic"
           fullWidth
           variant="outlined"
-          value={newCollector.nic}
+          value={newManager.nic}
           onChange={handleChange}
         />
         <TextField
@@ -131,7 +131,7 @@ const AddCollector = ({ open, handleClose }) => {
           name="phone"
           fullWidth
           variant="outlined"
-          value={newCollector.phone}
+          value={newManager.phone}
           onChange={handleChange}
         />
         <TextField
@@ -140,7 +140,7 @@ const AddCollector = ({ open, handleClose }) => {
           name="address"
           fullWidth
           variant="outlined"
-          value={newCollector.address}
+          value={newManager.address}
           onChange={handleChange}
         />
         <Box mt={2} display="flex" justifyContent="space-between">
@@ -148,7 +148,7 @@ const AddCollector = ({ open, handleClose }) => {
             Cancel
           </Button>
           <Button onClick={handleSubmit} color="primary">
-            Add Collector
+            Add Manager
           </Button>
         </Box>
       </Box>
@@ -163,4 +163,4 @@ const AddCollector = ({ open, handleClose }) => {
   );
 };
 
-export default AddCollector;
+export default AddManagers;

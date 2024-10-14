@@ -12,37 +12,35 @@ import {
   Box,
   TablePagination,
 } from "@mui/material";
-import AddCollector from "../../../components/admin/AddCollectors";
 import { API_URL } from "../../../config/config";
 import axios from "axios";
+import AddManagers from "../../../components/admin/AddManagers";
 
-const Collectors = () => {
+const Manager = () => {
   const [open, setOpen] = useState(false);
-  const [collectors, setCollectors] = useState([]); 
+  const [managers, setManagers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(0); 
-  const [rowsPerPage, setRowsPerPage] = useState(10); 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   useEffect(() => {
     const fetchCollectors = async () => {
       setLoading(true); // Start loading
       try {
-        const res = await axios.get(`${API_URL}/user/getusers?role=collector`, {
+        const res = await axios.get(`${API_URL}/user/getusers?role=manager`, {
           withCredentials: true,
         });
         const data = res.data;
-        setCollectors(data);
+        setManagers(data);
       } catch (error) {
         console.error(error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
     fetchCollectors();
   }, [open]);
-
-  
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -62,19 +60,18 @@ const Collectors = () => {
     setPage(0);
   };
 
-  
-  const paginatedCollectors = collectors.slice(
+  const paginatedCollectors = managers.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
-
   return (
     <div style={{ padding: "20px" }}>
-      <h1 style={{ marginBottom: 30, textAlign: "center" }}>Waste Collectors</h1>
+      <h1 style={{ marginBottom: 30, textAlign: "center" }}>
+        Managers
+      </h1>
 
-    
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
-        Add Collector
+        Add Managers
       </Button>
 
       <TableContainer component={Paper} style={{ marginTop: "20px" }}>
@@ -117,7 +114,7 @@ const Collectors = () => {
             {/* Pagination */}
             <TablePagination
               component="div"
-              count={collectors.length}
+              count={managers.length}
               page={page}
               onPageChange={handleChangePage}
               rowsPerPage={rowsPerPage}
@@ -129,9 +126,9 @@ const Collectors = () => {
       </TableContainer>
 
       {/* Modal for adding collectors */}
-      <AddCollector open={open} handleClose={handleClose} />
+      <AddManagers open={open} handleClose={handleClose} />
     </div>
   );
 };
 
-export default Collectors;
+export default Manager;
