@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 import { API_URL } from "../../config/config";
 
-const UpdateTruck = ({ open, handleClose, truck }) => {
+const UpdateTruck = ({ open, handleClose, truck, success }) => {
   const [updatedTruck, setUpdatedTruck] = useState(truck);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -38,6 +38,7 @@ const UpdateTruck = ({ open, handleClose, truck }) => {
       } else {
         setErrorMessage(null);
         handleClose();
+        success();  
       }
     } catch (error) {
       setErrorMessage(error.response?.data?.message || error.message);
@@ -57,6 +58,7 @@ const UpdateTruck = ({ open, handleClose, truck }) => {
   };
 
   return (
+    <>
     <Modal open={open} onClose={handleClose}>
       <Box sx={modalStyle}>
         <Typography variant="h6" component="h2">
@@ -95,8 +97,8 @@ const UpdateTruck = ({ open, handleClose, truck }) => {
           value={updatedTruck.capacity}
           onChange={handleChange}
         />
-        <Box mt={2} display="flex" justifyContent="flex-end">
-          <Button onClick={handleClose} color="secondary" sx={{ mr: 1 }}>
+        <Box mt={2} display="flex" justifyContent="space-between">
+          <Button onClick={handleClose} color="secondary.light" sx={{ mr: 1 }}>
             Cancel
           </Button>
           <Button onClick={handleSubmit} color="primary">
@@ -105,6 +107,8 @@ const UpdateTruck = ({ open, handleClose, truck }) => {
         </Box>
       </Box>
     </Modal>
+    </>
+    
   );
 };
 
