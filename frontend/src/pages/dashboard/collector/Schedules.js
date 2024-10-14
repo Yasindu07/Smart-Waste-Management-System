@@ -20,6 +20,7 @@ import { styled } from '@mui/system';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping'; 
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import ScaleIcon from '@mui/icons-material/Scale';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
@@ -174,13 +175,13 @@ const Schedules = () => {
                     onClick={() => handleCardClick(schedule._id)}
                   >
                     <CardContent>
-                      <Box display="flex" alignItems="center" mb={1}>
+                    <Box display="flex" alignItems="center" mb={1}>
                         {schedule.status === 'done' ? (
                           <CheckCircleIcon fontSize="large" sx={{ marginRight: '0.5rem' }} />
                         ) : (
                           <HourglassEmptyIcon fontSize="large" sx={{ marginRight: '0.5rem' }} />
                         )}
-                        <Typography variant="h6" component="div">
+                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                           {new Date(schedule.time).toLocaleString([], {
                             year: 'numeric',
                             month: 'long',
@@ -201,6 +202,15 @@ const Schedules = () => {
                         <Typography variant="body1" color="inherit">
                           {schedule.address}
                         </Typography>
+                      </Box>
+
+                      {/* Truck Number Display */}
+                      <Box display="flex" alignItems="center" justifyContent="space-between" mb={1} sx={{ marginTop: '1rem' }}>
+                        <Typography variant="body1" color="inherit" sx={{ flexGrow: 1 }}>
+                          {/* Add truck number display */}
+                          Truck Number: {schedule.truckNumber} {/* Display truck number here */}
+                        </Typography>
+                        <LocalShippingIcon color="white" sx={{ marginLeft: '0.5rem' }} />
                       </Box>
                       {isExpanded && (
                         <>

@@ -16,4 +16,5 @@ router.put("/:id", updateSchedule); // PUT /api/schedules/:id
 router.get("/:id", getScheduleById); // GET /api/schedules/:id
 router.delete("/:id", deleteSchedule); // DELETE /api/schedules/:id
 
+
 export default router;

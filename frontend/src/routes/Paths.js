@@ -16,6 +16,7 @@ export const DashBoardPaths = {
     COLLECTION_ROUTE: 'show-route/:id',
     COLLECTION_VERIFY: 'qr-scan/:id',
      COLLECTING: 'collecting/:id/:scannedCode',
+    ADDSCHEDULE: 'add-shedule',
     USER_WASTE_LEVEL: 'waste-level',
     TRUCKS: 'trucks',
     COLLECTORS: 'collectors',

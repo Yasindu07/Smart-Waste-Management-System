@@ -15,9 +15,10 @@ import Trucks from "../pages/dashboard/admin/Trucks";
 import Collectors from "../pages/dashboard/admin/Collectors";
 import SpecialCollection from "../pages/dashboard/user/SpecialCollection";
 import Collecting from "../pages/dashboard/collector/Collecting";
-import RequestTrackingDevice from "../pages/dashboard/user/Request_device"
+import RequestTrackingDevice from "../pages/dashboard/user/Request_device";
 import OrderProcess from "../pages/dashboard/user/order_process";
-import AdminRequestsPage from "../pages/dashboard/admin/Device_Requests"
+import AdminRequestsPage from "../pages/dashboard/admin/Device_Requests";
+import AddSchedule from "../pages/dashboard/manager/AddSchedule";
 
 const DashboardRoutes = () => {
   return (
@@ -26,6 +27,7 @@ const DashboardRoutes = () => {
       <Route path={DashBoardPaths.SCHEDULE} element={<Schedule />} />
       <Route path={DashBoardPaths.CURRENT_WASTE} element={<CurrentWaste />} />
       <Route path={DashBoardPaths.COLLECTOR_ASSIGNED_SCHEDULE} element={<Schedules />} />
+      <Route path={DashBoardPaths.ADDSCHEDULE} element={<AddSchedule />} />
       <Route path={DashBoardPaths.COLLECTION_ROUTE} element={<ShowRoute />} />
       <Route path={DashBoardPaths.COLLECTION_VERIFY} element={<QRScan />} />
       <Route path={DashBoardPaths.COLLECTING} element={<Collecting />} />
@@ -36,6 +38,8 @@ const DashboardRoutes = () => {
       <Route path={DashBoardPaths.REQUEST_WASTE_DEVICE} element={<RequestTrackingDevice />} />
       <Route path={DashBoardPaths.ORDER_PROCESS} element={<OrderProcess />} />
       <Route path={DashBoardPaths.ALL_REQUESTS} element={<AdminRequestsPage />} />
+
+
     </Routes>
   );
 };

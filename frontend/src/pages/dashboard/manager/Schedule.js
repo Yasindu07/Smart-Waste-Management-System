@@ -1,5 +1,11 @@
-import React, { useState } from "react";
+// src/components/Schedule.js
+
+import React, { useEffect, useState ,navigate} from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 import {
+  Container,
+  Typography,
   Table,
   TableBody,
   TableCell,
@@ -7,102 +13,166 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Button,
-  Modal,
+  CircularProgress,
+  Alert,
   Box,
-} from "@mui/material";
-import AddSchedule from "../../../components/manager/AddSchedule";
-const schedulesData = [
-  {
-    id: 1,
-    customerID: "#0001",
-    deviceID: "#0001",
-    name: "Yasindu Balasooriya",
-    fullDate: "05/01/2024",
-    address: "No. asdasdsdsa asdsadasdasda",
-    phone: "076 8554789",
-    organic: "50%",
-    recycle: "30%",
-    nonRecycle: "20%",
-  },
-  // Add more schedules if needed
-];
+  Chip,
+  Tooltip,
+  Button
+} from '@mui/material';
+import { styled } from '@mui/system';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import StarIcon from '@mui/icons-material/Star';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
+
+// Styled TableCell for header
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.dark,
+  color: theme.palette.common.white,
+  fontWeight: 'bold',
+}));
+
+// Styled TableRow for striped effect
+const StyledTableRow = styled(TableRow)(({ theme, index }) => ({
+  backgroundColor: index % 2 === 0 ? theme.palette.action.hover : 'inherit',
+}));
 
 const Schedule = () => {
-  const [openModal, setOpenModal] = useState(false);
+  const [schedules, setSchedules] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
+  // Fetch schedules from the backend
+  const fetchSchedules = async () => {
+    try {
+      const res = await axios.get('http://localhost:5002/api/schedules');
+      setSchedules(res.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch schedules.');
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSchedules();
+  }, []);
+
+  // Function to format date
+  const formatDate = (dateString) => {
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    };
+    return new Date(dateString).toLocaleString([], options);
+  };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Current Waste Level</h2>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Customer ID</TableCell>
-              <TableCell>Device ID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Full Date</TableCell>
-              <TableCell>Address</TableCell>
-              <TableCell>Phone</TableCell>
-              <TableCell>Capacity filled (Organic)</TableCell>
-              <TableCell>Capacity filled (Recycle)</TableCell>
-              <TableCell>Capacity filled (Non Recycle)</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {schedulesData.map((schedule) => (
-              <TableRow key={schedule.id}>
-                <TableCell>{schedule.customerID}</TableCell>
-                <TableCell>{schedule.deviceID}</TableCell>
-                <TableCell>{schedule.name}</TableCell>
-                <TableCell>{schedule.fullDate}</TableCell>
-                <TableCell>{schedule.address}</TableCell>
-                <TableCell>{schedule.phone}</TableCell>
-                <TableCell>{schedule.organic}</TableCell>
-                <TableCell>{schedule.recycle}</TableCell>
-                <TableCell>{schedule.nonRecycle}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleOpenModal}
-        sx={{ marginTop: 2 }}
-      >
-        Add Schedule
-      </Button>
+    <Box>
+     <Button
+      component={Link} // Use Link as the component
+      to="/dashboard/add-shedule" // The path to navigate to
+      variant="contained"
+      color="success" // Green color
+      sx={{ margin: '1rem' }} // Optional: Adds some space around the button
+    >
+      Add Schedule
+    </Button>
+      <Container maxWidth="lg" sx={{ marginTop: { xs: '2rem', md: '4rem' }, marginBottom: '2rem' }}>
+       
 
-      <Modal open={openModal} onClose={handleCloseModal}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: {
-              xs: "90%", // 90% width for extra-small and small screens (mobile)
-              sm: "80%", // 80% width for small screens (tablet)
-              md: "600px", // Fixed width for medium and larger screens
-            },
-            bgcolor: "background.paper",
-            p: {
-              xs: 2, // Smaller padding for extra-small screens
-              sm: 3, // Medium padding for small screens
-              md: 4, // Larger padding for medium and larger screens
-            },
-            borderRadius: 2,
-          }}
-        >
-          <AddSchedule onClose={handleCloseModal} />
-        </Box>
-      </Modal>
-    </div>
+        {loading ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+            <CircularProgress />
+          </Box>
+        ) : error ? (
+          <Alert severity="error" sx={{ marginTop: '2rem' }}>
+            {error}
+          </Alert>
+        ) : (
+          <TableContainer component={Paper} sx={{ marginTop: '2rem' }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  {/* <StyledTableCell>Time</StyledTableCell> */}
+                  <StyledTableCell>Address</StyledTableCell>
+                  <StyledTableCell>Status</StyledTableCell>
+                  <StyledTableCell>Code</StyledTableCell>
+                  <StyledTableCell>Truck Number</StyledTableCell>
+                  <StyledTableCell>Garbage Collector Name</StyledTableCell>
+                  <StyledTableCell>Weight (kg)</StyledTableCell>
+                  <StyledTableCell>Type</StyledTableCell>
+                  <StyledTableCell>Special</StyledTableCell>
+                  <StyledTableCell>Created At</StyledTableCell>
+                  <StyledTableCell>Updated At</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {schedules.map((schedule, index) => {
+                  const currentDate = new Date();
+                  const scheduleDate = new Date(schedule.time);
+                  const datePassed = scheduleDate < currentDate;
+
+                  return (
+                    <StyledTableRow key={schedule._id} index={index}>
+                      {/* <TableCell>{formatDate(schedule.time)}</TableCell> */}
+                      <TableCell>{schedule.address}</TableCell>
+                      <TableCell>
+                        {schedule.status === 'done' ? (
+                          <Chip
+                            label="Done"
+                            color="success"
+                            icon={<CheckCircleIcon />}
+                            variant="outlined"
+                          />
+                        ) : (
+                          <Chip
+                            label="Not Done"
+                            color="warning"
+                            icon={<HourglassEmptyIcon />}
+                            variant="outlined"
+                          />
+                        )}
+                        {datePassed && schedule.status === 'notdone' && (
+                          <Tooltip title="This schedule is overdue!">
+                            <DeleteSweepIcon color="error" sx={{ marginLeft: '0.5rem' }} />
+                          </Tooltip>
+                        )}
+                      </TableCell>
+                      <TableCell>{schedule.code}</TableCell>
+                      <TableCell>{schedule.truckNumber}</TableCell>
+                      <TableCell>{schedule.garbageCollectorId || 'N/A'}</TableCell>
+                      <TableCell>{schedule.weight !== null ? schedule.weight : 'N/A'}</TableCell>
+                      <TableCell>{schedule.type || 'N/A'}</TableCell>
+                      <TableCell>
+                        {schedule.special ? (
+                          <Chip
+                            label="Special"
+                            color="primary"
+                            icon={<StarIcon />}
+                            variant="outlined"
+                          />
+                        ) : (
+                          'No'
+                        )}
+                      </TableCell>
+                      <TableCell>{formatDate(schedule.createdAt)}</TableCell>
+                      <TableCell>{formatDate(schedule.updatedAt)}</TableCell>
+                    </StyledTableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </Container>
+    </Box>
   );
 };
 

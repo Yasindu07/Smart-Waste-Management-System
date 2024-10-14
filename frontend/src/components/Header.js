@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import MenuIcon from "@mui/icons-material/Menu";
 import { logoutSuccess } from "../redux/user/userSlice";
 
-import logo from "../assets/images/white-logo.png";
+import logo from "../assets/images/ecobin.png";
 import axios from "axios";
 import { API_URL } from "../config/config";
 
@@ -82,7 +82,8 @@ const Header = ({ handleSidebarToggle }) => {
           component="img"
           sx={{
             // height: 200,
-            height: 60,
+            height: 50,
+            p:0.3,
             maxHeight: { xs: 200, md: 300 },
             maxWidth: { xs: 300, md: 400 },
           }}

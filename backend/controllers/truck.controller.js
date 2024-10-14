@@ -35,6 +35,15 @@ export const getAllTrucks = async (req, res, next) => {
     }
 };
 
+export const getAllTruckNumbers = async (req, res, next) => {
+    try {
+        const trucks = await Truck.find();
+        res.status(200).json(trucks);
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 export const getTruckById = async (req, res, next) => {
     if (req.user.role !== "admin") {

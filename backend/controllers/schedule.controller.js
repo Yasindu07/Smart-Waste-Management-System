@@ -13,8 +13,8 @@ export const getAllSchedules = async (req, res, next) => {
 // Create a new schedule
 export const createSchedule = async (req, res, next) => {
   try {
-    const { time, address, status, code ,special} = req.body;
-    const newSchedule = new Schedule({ time, address, status, code ,special});
+    const { time, address, status, code ,special,truckNumber} = req.body;
+    const newSchedule = new Schedule({ time, address, status, code ,special,truckNumber});
     const savedSchedule = await newSchedule.save();
     res.status(201).json(savedSchedule);
   } catch (error) {
