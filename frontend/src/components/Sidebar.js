@@ -9,6 +9,7 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import SensorsIcon from '@mui/icons-material/Sensors';
 import HistoryIcon from '@mui/icons-material/History';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -30,6 +31,12 @@ const sidebarItems = [
     label: 'Collectors',
     path: '/dashboard/collectors',
     icon: <GroupAddIcon />,
+    role: 'admin',
+  },
+  {
+    label: 'Managers',
+    path: '/dashboard/managers',
+    icon: <ManageAccountsIcon />,
     role: 'admin',
   },
   {
