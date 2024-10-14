@@ -53,3 +53,34 @@ export const getCollectors = async (req, res, next) => {
         next(error);
     }
 };
+
+
+export const completeProfile = async (req, res, next) => {
+    if (req.user.id !== req.params.userId) {
+        return next(errorHandler(403, 'You are not allowed to update this user'));
+    }
+
+    const { phone, address, nic } = req.body;
+    const userId = req.params.userId; 
+    
+    if (!phone || !address || !nic) {
+        return next(errorHandler(400, "Phone, address, and NIC are required"));
+    }
+
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { phone, address, nic, isCompleted: true },
+            { new: true } // To return the updated document
+        );
+
+        if (!updatedUser) {
+            return next(errorHandler(404, "User not found"));
+        }
+
+        const { password, ...rest } = updatedUser._doc;
+        res.status(200).json({ message: "Profile updated successfully", user: rest });
+    } catch (error) {
+        next(error);
+    }
+};
