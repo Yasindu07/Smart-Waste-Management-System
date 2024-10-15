@@ -6,7 +6,6 @@ import { DashBoardPaths } from "./Paths";
 import Profile from "../pages/dashboard/Profile";
 import CurrentWaste from "../pages/dashboard/manager/CurrentWaste";
 import Schedule from "../pages/dashboard/manager/Schedule";
-import AssignedSchedule from "../pages/dashboard/collector/AssignedSchedule";
 import Schedules from "../pages/dashboard/collector/Schedules";
 import ShowRoute from "../pages/dashboard/collector/ShowRoute";
 import QRScan from "../pages/dashboard/collector/QRScan"; 
@@ -22,6 +21,7 @@ import AddSchedule from "../pages/dashboard/manager/AddSchedule";
 import FilteredRequests from "../pages/dashboard/user/Request_history"
 import EditSchedule from "../pages/dashboard/manager/EditSchedule";
 import Manager from "../pages/dashboard/admin/Manager";
+import ApproveRequest from "../pages/dashboard/manager/ApproveRequest";
 const DashboardRoutes = () => {
   return (
     <Routes>
@@ -43,7 +43,7 @@ const DashboardRoutes = () => {
       <Route path={DashBoardPaths.REQUEST_HISTORY} element={<FilteredRequests />} />
       <Route path={DashBoardPaths.MANAGER} element={<Manager />} />
       <Route path={DashBoardPaths.PROFILE} element={<Profile />} />
-
+      <Route path={DashBoardPaths.APPROVE_REQUEST} element={<ApproveRequest />} />
     </Routes>
   );
 };

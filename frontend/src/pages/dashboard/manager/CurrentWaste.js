@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import axios from 'axios';
+import { API_URL } from '../../../config/config';
 
 const CuurentWaste = [
     {
@@ -18,6 +20,26 @@ const CuurentWaste = [
   ];
 
 const CurrentWaste = () => {
+  const [wasteDevices, setWasteDevice] = useState([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const fetchDevices = async () => {
+      setLoading(true); // Start loading
+      try {
+        const res = await axios.get(`${API_URL}/wasteDevice/get-all-devices`, {
+          withCredentials: true,
+        });
+        const data = res.data;
+        setWasteDevice(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false); 
+      }
+    };
+    fetchDevices();
+  }, []);
+
   return (
     <div style={{ padding: "20px" }}>
         <h2>Current Waste Level</h2>
@@ -25,9 +47,8 @@ const CurrentWaste = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Customer ID</TableCell>
                 <TableCell>Device ID</TableCell>
-                <TableCell>Name</TableCell>
+                <TableCell>wasteType</TableCell>
                 <TableCell>Full Date</TableCell>
                 <TableCell>Address</TableCell>
                 <TableCell>Phone</TableCell>
@@ -37,17 +58,16 @@ const CurrentWaste = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {CuurentWaste.map((schedule) => (
-                <TableRow key={schedule.id}>
-                  <TableCell>{schedule.customerID}</TableCell>
-                  <TableCell>{schedule.deviceID}</TableCell>
-                  <TableCell>{schedule.name}</TableCell>
-                  <TableCell>{schedule.fullDate}</TableCell>
-                  <TableCell>{schedule.address}</TableCell>
-                  <TableCell>{schedule.phone}</TableCell>
-                  <TableCell>{schedule.organic}</TableCell>
-                  <TableCell>{schedule.recycle}</TableCell>
-                  <TableCell>{schedule.nonRecycle}</TableCell>
+              {wasteDevices.map((wasteDevices) => (
+                <TableRow key={wasteDevices.id}>
+                  <TableCell>{wasteDevices._id}</TableCell>
+                  <TableCell>{wasteDevices.wasteType}</TableCell>
+                  <TableCell>{wasteDevices.wasteLevel}</TableCell>
+                  <TableCell>{wasteDevices.address}</TableCell>
+                  <TableCell>{wasteDevices.phone}</TableCell>
+                  <TableCell>{wasteDevices.organic}</TableCell>
+                  <TableCell>{wasteDevices.recycle}</TableCell>
+                  <TableCell>{wasteDevices.nonRecycle}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

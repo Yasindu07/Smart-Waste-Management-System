@@ -10,6 +10,7 @@ import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import SensorsIcon from '@mui/icons-material/Sensors';
 import HistoryIcon from '@mui/icons-material/History';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import StarsIcon from '@mui/icons-material/Stars';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -61,6 +62,12 @@ const sidebarItems = [
     label: 'Current Waste',
     path: '/dashboard/current-waste',
     icon: <DeleteSweepSharpIcon />,
+    role: 'manager',
+  },
+  {
+    label: 'Special Collection',
+    path: '/dashboard/approve-special-request',
+    icon: <StarsIcon />,
     role: 'manager',
   },
   {
