@@ -10,6 +10,7 @@ import userRoutes from "./routes/user.route.js";
 import specialCollectionRoutes from "./routes/specialCollection.route.js";
 import requestTrackingDeviceRoutes from "./routes/requestDevice.route.js";
 import wasteDeviceRoutes from "./routes/device.route.js";
+import paymentRoutes from "./routes/payment.route.js"; 
 
 
 dotenv.config();
@@ -36,6 +37,7 @@ app.use('/api/user',userRoutes);
 app.use('/api/specialCollection',specialCollectionRoutes);
 app.use('/api/device', requestTrackingDeviceRoutes);
 app.use('/api/wasteDevice',wasteDeviceRoutes)
+app.use('/api/payment', paymentRoutes);
 
 
 app.use((err,req,res,next) => {

@@ -28,5 +28,7 @@ export const DashBoardPaths = {
     SPECIAL_COLLECTION_HISTORY: 'special-collection-history',
     REQUEST_HISTORY : 'request-history',
     MANAGER : 'managers',
-    APPROVE_REQUEST : 'approve-special-request'	
+    APPROVE_REQUEST : 'approve-special-request',
+    DEVICE_PAYMENT : 'device-payment',
+
 }

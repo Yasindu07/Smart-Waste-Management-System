@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 import axios from 'axios'; // Import axios to make API calls
 import { API_URL } from "../../../config/config"; // Import API URL
 import {
@@ -19,6 +19,11 @@ import {
     Box,
 } from '@mui/material';
 import { useSelector } from "react-redux";
+import DeleteConfirmationDialog from "../../../components/user/DeleteConfirmationDialog";
+import { useNavigate } from 'react-router-dom';
+import { DashBoardPaths } from '../../../routes/Paths'; 
+
+
 
 const FilteredRequests = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -28,7 +33,15 @@ const FilteredRequests = () => {
     const [pendingRequests, setPendingRequests] = useState([]); // State for pending requests
     const [filter, setFilter] = useState('approved'); // Filter state for approved/rejected/pending requests
 
+
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [requestIdToDelete, setRequestIdToDelete] = useState(null);
+
+    const navigate = useNavigate(); // Initialize navigate
+
     // Fetch requests for the current user
+
+
     useEffect(() => {
         const fetchRequests = async () => {
             try {
@@ -66,7 +79,35 @@ const FilteredRequests = () => {
     const handlePayment = (requestId) => {
         // Implement payment processing logic here
         console.log(`Payment for request ID: ${requestId}`);
+        navigate('/dashboard/order-process');
     };
+
+    const handleDeleteRequest = (requestId) => {
+        setRequestIdToDelete(requestId);
+        setOpenDeleteDialog(true);
+    };
+
+    const confirmDelete = async () => {
+        if (requestIdToDelete) {
+            try {
+                await axios.delete(`${API_URL}/device/deleteRequest/${requestIdToDelete}`);
+                const updatedRequests = displayedRequests.filter(request => request._id !== requestIdToDelete);
+                if (filter === 'approved') {
+                    setApprovedRequests(updatedRequests);
+                } else if (filter === 'rejected') {
+                    setRejectedRequests(updatedRequests);
+                } else {
+                    setPendingRequests(updatedRequests);
+                }
+            } catch (error) {
+                console.error("Error deleting request:", error);
+            }
+        }
+        setOpenDeleteDialog(false);
+    };
+
+
+    
 
     return (
         <Box sx={{ padding: { xs: 2, md: 5 }, textAlign: 'center' }}>
@@ -94,6 +135,7 @@ const FilteredRequests = () => {
                             <TableCell>Waste Type</TableCell>
                             <TableCell>Status</TableCell>
                             {filter === 'approved' && <TableCell>Payment</TableCell>} {/* Conditionally render Payment column */}
+                            <TableCell>Actions</TableCell> {/* New Actions Column */}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -114,16 +156,34 @@ const FilteredRequests = () => {
                                             </Button>
                                         </TableCell>
                                     )}
+                                    <TableCell>
+                                        <Button 
+                                            variant="outlined" 
+                                            color="error" 
+                                            onClick={() => handleDeleteRequest(request._id)} // Call delete handler
+                                        >
+                                            Delete
+                                        </Button>
+                                    </TableCell>
                                 </TableRow>
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={filter === 'approved' ? 4 : 3} align="center">No requests found.</TableCell> {/* Adjusted colspan for new column */}
+                                <TableCell colSpan={filter === 'approved' ? 5 : 4} align="center">No requests found.</TableCell> {/* Adjusted colspan for new column */}
                             </TableRow>
                         )}
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            <DeleteConfirmationDialog
+                open={openDeleteDialog}
+                onClose={() => setOpenDeleteDialog(false)}
+                onConfirm={confirmDelete}
+            />
+
+
+
         </Box>
     );
 };

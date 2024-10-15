@@ -22,6 +22,7 @@ import FilteredRequests from "../pages/dashboard/user/Request_history"
 import EditSchedule from "../pages/dashboard/manager/EditSchedule";
 import Manager from "../pages/dashboard/admin/Manager";
 import ApproveRequest from "../pages/dashboard/manager/ApproveRequest";
+import Device_payment from "../pages/dashboard/admin/Device_payment";
 const DashboardRoutes = () => {
   return (
     <Routes>
@@ -44,6 +45,8 @@ const DashboardRoutes = () => {
       <Route path={DashBoardPaths.MANAGER} element={<Manager />} />
       <Route path={DashBoardPaths.PROFILE} element={<Profile />} />
       <Route path={DashBoardPaths.APPROVE_REQUEST} element={<ApproveRequest />} />
+      <Route path={DashBoardPaths.DEVICE_PAYMENT} element={<Device_payment />} />
+
     </Routes>
   );
 };

@@ -107,6 +107,13 @@ const sidebarItems = [
     role: 'user',
   },
 
+  {
+    label: 'Payments',
+    path: '/dashboard/device-payment',
+    icon: <HistoryIcon/>,
+    role: 'admin',
+  },
+
 
 
 
