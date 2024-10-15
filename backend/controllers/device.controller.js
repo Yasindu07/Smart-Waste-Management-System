@@ -63,7 +63,7 @@ export const getDeviceByUserId = async (req, res, next) => {
     const device = await Device.findOne({ userId });
 
     if (!device) {
-      return res.status(404).json({ message: "Device not found for this user" });
+      return res.status(404).json({ message: "Device not found for this user. Please request device and complete profile" });
     }
 
     res.json(device);

@@ -26,21 +26,25 @@ const LinkDevice = ({ open, handleClose }) => {
   useEffect(() => {
     const fetchUser = async () => {
       setLoading(true); // Start loading
+      setErrorMessage(null); // Clear any previous error messages
       try {
         const res = await axios.get(`${API_URL}/user/getusers?role=user`, {
           withCredentials: true,
         });
         const data = res.data;
-        console.log(data);
-        if(data.success === false) {
+
+        if (data.success === false) {
           setErrorMessage(data.message);
         } else {
           const completedUsers = data.filter((user) => user.isCompleted);
           setUsers(completedUsers);
         }
-        
       } catch (error) {
-        console.error(error.response?.data?.message || error.message);
+        const errMsg = error.response?.data?.message || "User already has a linked device";
+        setErrorMessage(errMsg); // Handle backend error response
+        console.error(errMsg);
+      } finally {
+        setLoading(false); // Stop loading regardless of success or error
       }
     };
 
