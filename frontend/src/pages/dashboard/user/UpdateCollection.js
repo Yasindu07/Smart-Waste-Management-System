@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   TextField,
@@ -15,10 +15,8 @@ import axios from "axios";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { API_URL } from "../../../config/config";
 import { storage } from "../../../firebaseConfig"; 
-import CustomSnackbar from "../../../components/CustomSnackbar"; 
-import { useSelector } from "react-redux";
 
-const SpecialCollection = () => {
+const UpdateCollection = ({ initialData, onClose }) => {
   const [wasteType, setWasteType] = useState("");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
@@ -27,28 +25,20 @@ const SpecialCollection = () => {
   const [imageFile, setImageFile] = useState(null);
   const [progress, setProgress] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
-  const [snackbarOpen, setSnackbarOpen] = useState(false); 
-  const [snackbarMessage, setSnackbarMessage] = useState(""); 
-  const [snackbarSeverity, setSnackbarSeverity] = useState("success"); 
 
-  const { currentUser } = useSelector((state) => state.user);
+  useEffect(() => {
+    
+    if (initialData) {
+      setWasteType(initialData.wasteType);
+      setDate(new Date(initialData.chooseDate).toISOString().split("T")[0]);
+      setDescription(initialData.wasteDescription);
+      setEmergencyCollection(initialData.emergencyCollection);
+      setImage(initialData.wasteImage); 
+    }
+  }, [initialData]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Form validation
-    if (!wasteType || !date || !description || !emergencyCollection) {
-      setErrorMessage("All fields are required.");
-      return; 
-    }
-
-   
-    const today = new Date().toISOString().split("T")[0]; 
-    if (date < today) {
-      setErrorMessage("Cannot select a past date.");
-      return; 
-    }
-
     let downloadURL = null;
 
     
@@ -57,7 +47,7 @@ const SpecialCollection = () => {
       const uploadTask = uploadBytesResumable(storageRef, imageFile);
 
       try {
-        
+       
         await new Promise((resolve, reject) => {
           uploadTask.on(
             "state_changed",
@@ -82,66 +72,41 @@ const SpecialCollection = () => {
       }
     }
 
-   
+    
     const formData = {
       wasteType,
       chooseDate: date,
       wasteDescription: description,
       emergencyCollection,
-      wasteImage: downloadURL || null,
-      user: currentUser,
+      wasteImage: downloadURL || image, 
     };
 
-    
-    await saveSpecialCollection(formData);
+   
+    await updateSpecialCollection(formData);
   };
 
- 
-  const saveSpecialCollection = async (formData) => {
+  
+  const updateSpecialCollection = async (formData) => {
     try {
-      const response = await axios.post(
-        `${API_URL}/specialCollection/add`,
+      const response = await axios.put(
+        `${API_URL}/specialCollection/update/${initialData._id}`,
         formData
       );
-      console.log("Data saved successfully: ", response.data);
-      
-     
-      setSnackbarMessage("Data saved successfully!");
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
-
-    
-      setWasteType("");
-      setDate("");
-      setDescription("");
-      setEmergencyCollection("");
-      setImage(null);
-      setImageFile(null);
-      setProgress(0);
-      setErrorMessage(""); 
+      console.log("Data updated successfully: ", response.data);
+      onClose(); 
     } catch (error) {
-      console.error("Error saving data: ", error);
-      setErrorMessage("Failed to save data. Please try again.");
-      
-      
-      setSnackbarMessage("Failed to save data. Please try again.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-    }
-  };
-
- 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setImage(URL.createObjectURL(file));
-      setImageFile(file);
+      console.error("Error updating data: ", error);
+      setErrorMessage("Failed to update data. Please try again.");
     }
   };
 
   
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImage(URL.createObjectURL(file)); 
+      setImageFile(file);
+    }
   };
 
   return (
@@ -191,7 +156,7 @@ const SpecialCollection = () => {
           width: 150,
           height: 150,
           cursor: "pointer",
-          margin: "0 auto", 
+          margin: "0 auto",
           overflow: "hidden", 
         }}
       >
@@ -232,10 +197,9 @@ const SpecialCollection = () => {
           shrink: true,
         }}
         required
-        inputProps={{ min: new Date().toISOString().split("T")[0] }} 
       />
 
-     
+      
       <TextField
         label="Enter waste description"
         multiline
@@ -245,7 +209,7 @@ const SpecialCollection = () => {
         required
       />
 
-     
+      
       <TextField
         label="In emergency waste collection"
         multiline
@@ -258,10 +222,10 @@ const SpecialCollection = () => {
       
       {progress > 0 && <LinearProgress variant="determinate" value={progress} />}
 
-    
+      
       {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
 
-   
+      
       <Button
         variant="contained"
         type="submit"
@@ -273,17 +237,10 @@ const SpecialCollection = () => {
           },
         }}
       >
-        Submit
+        Update
       </Button>
-
-      <CustomSnackbar
-        open={snackbarOpen}
-        onClose={handleSnackbarClose}
-        message={snackbarMessage}
-        severity={snackbarSeverity}
-      />
     </Box>
   );
 };
 
-export default SpecialCollection;
+export default UpdateCollection;

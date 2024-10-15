@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const SpecialCollectionSchema = new mongoose.Schema(
     {
+        user: {
+            type: Object,
+            required: true,
+        },
         wasteType: {
             type: String,
             required: true,
@@ -23,8 +27,12 @@ const SpecialCollectionSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        payment: {
+            type: Number,
+        },
         wasteStatus: {
             type: String,
+            enum: ["Pending", "Approved", "Rejected"],
             default: "Pending",
         },
     }, 

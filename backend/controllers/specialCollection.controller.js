@@ -3,7 +3,7 @@ import SpecialCollection from "../models/specialCollection.model.js";
 // Create New Special Collection
 export const addSpecialCollection = async (req, res, next) => {
     try {
-        const { wasteType, wasteImage, chooseDate, wasteDescription, emergencyCollection } = req.body;
+        const { wasteType, wasteImage, chooseDate, wasteDescription, emergencyCollection, user } = req.body;
 
         if (!wasteType || !wasteImage || !chooseDate || !wasteDescription || !emergencyCollection) {
             return res.status(400).json({ message: "All fields are required" });
@@ -15,6 +15,7 @@ export const addSpecialCollection = async (req, res, next) => {
             chooseDate,
             wasteDescription,
             emergencyCollection,
+            user,
         });
 
         const savedSpecialCollection = await newSpecialCollection.save();
@@ -60,7 +61,7 @@ export const updateSpecialCollection = async (req, res, next) => {
             wasteImage,
             chooseDate,
             wasteDescription,
-            emergencyCollection,
+            emergencyCollection
         }, { new: true });
 
         if (!updatedCollection) {
@@ -73,6 +74,27 @@ export const updateSpecialCollection = async (req, res, next) => {
         next(error);
     }
 };
+
+// Update Special status
+export const updateSpecialStatus = async (req, res, next) => {
+    try {
+        const { payment, wasteStatus } = req.body;
+        const updatedCollection = await SpecialCollection.findByIdAndUpdate(req.params.id, {
+            payment,
+            wasteStatus
+        }, { new: true });
+
+        if (!updatedCollection) {
+            return res.status(404).json({ message: "Collection not found" });
+        }
+
+        res.status(200).json({ message: "Collection updated successfully", data: updatedCollection });
+    } catch (error) {
+        console.error("Error in updateSpecialCollection: ", error);
+        next(error);
+    }
+};
+
 
 // Delete Special Collection
 export const deleteSpecialCollection = async (req, res, next) => {
