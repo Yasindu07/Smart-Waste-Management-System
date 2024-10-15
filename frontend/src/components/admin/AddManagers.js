@@ -31,8 +31,8 @@ const AddManagers = ({ open, handleClose }) => {
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewManager((prevCollector) => ({
-      ...prevCollector,
+    setNewManager((prevtruck) => ({
+      ...prevtruck,
       [name]: value,
     }));
   };
@@ -40,6 +40,31 @@ const AddManagers = ({ open, handleClose }) => {
   // Submit form and pass collector data back to parent
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i; // Basic email validation
+    const phoneRegex = /^\d{10}$/; // Validates 10-digit phone numbers
+    const nicRegex = /^[0-9]{9}[vVxX]$|^[0-9]{12}$/; // Validates old (9 digits + V/X) or new (12 digits) NIC formats
+    // Client-side validation
+    if (
+      !newManager.username ||
+      !newManager.email ||
+      !newManager.nic ||
+      !newManager.phone ||
+      !newManager.address
+    ) {
+      return setErrorMessage("Please fill out all fields.");
+    }
+
+    if (!emailRegex.test(newManager.email)) {
+      return setErrorMessage("Please enter a valid email address.");
+    }
+
+    if (!phoneRegex.test(newManager.phone)) {
+      return setErrorMessage("Phone number must be 10 digits.");
+    }
+
+    if (!nicRegex.test(newManager.nic)) {
+      return setErrorMessage("Please enter a valid NIC.");
+    }
     try {
       const res = await axios.post(
         `${API_URL}/user/addUsers?role=manager`,

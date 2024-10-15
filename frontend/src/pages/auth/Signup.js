@@ -64,6 +64,25 @@ const Signup = () => {
       return setErrorMessage("Please fill out all fields.");
     }
 
+    // Email validation regex pattern
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    // Password must be at least 8 characters long, contain one uppercase letter, one number, and one special character
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+
+    // Client-side validation
+    if (!formData.username || !formData.email || !formData.password) {
+      return setErrorMessage("Please fill out all fields.");
+    }
+    if (!emailRegex.test(formData.email)) {
+      return setErrorMessage("Please enter a valid email address.");
+    }
+    if (!passwordRegex.test(formData.password)) {
+      return setErrorMessage(
+        "Password must be at least 8 characters long, contain one uppercase letter, one number, and one special character."
+      );
+    }
+
     try {
       setLoading(true);
       setErrorMessage(null);
@@ -91,17 +110,19 @@ const Signup = () => {
       setErrorMessage(error.message || "An error occurred");
     }
   };
-  return (<Box><ResponsiveAppBar/>
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        {/* <Box
+  return (
+    <Box>
+      <ResponsiveAppBar />
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          {/* <Box
           component="img"
           sx={{
             // height: 200,
@@ -112,103 +133,112 @@ const Signup = () => {
           alt="Image description"
           src={logo}
         /> */}
-        <Typography component="h1" variant="h5">
-          Sign Up
-        </Typography>
-        <Grid2 container justifyContent="center" sx={{ mt: 1 }}>
-          {errorMessage && (
-            <Typography alignContent={"center"} color="error">
-              {errorMessage}
-            </Typography>
-          )}
-        </Grid2>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
-          <TextField
-            margin="normal"
-            autoComplete="given-name"
-            name="username"
-            required
-            fullWidth
-            id="username"
-            label="Username"
-            autoFocus
-            value={formData.username}
-            onChange={handleChange}
-          />
-
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-
-          <FormControl variant="outlined" fullWidth margin="normal">
-            <InputLabel htmlFor="outlined-adornment-password">
-              Password *
-            </InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-password"
-              type={showPassword ? "text" : "password"}
-              name="password"
-              label="Password"
-              value={formData.password}
-              onChange={handleChange}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    onMouseUp={handleMouseUpPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-
-          <Button
-            disabled={loading}
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            {loading ? "Signing up..." : "Sign Up"}
-          </Button>
-          <Grid2 container justifyContent="center">
-            <Grid2 item>
-              <Link to="/auth/sign-in" variant="body2">
-              <Typography color="secondary.dark">
-              Already have an account? Sign in</Typography>
-              </Link>
-            </Grid2>
+          <Typography component="h1" variant="h5">
+            Sign Up
+          </Typography>
+          <Grid2 container justifyContent="center" sx={{ mt: 1 }}>
+            {errorMessage && (
+              <Typography alignContent={"center"} color="error">
+                {errorMessage}
+              </Typography>
+            )}
           </Grid2>
-        </Box>
-        <Snackbar
-          open={openSnackbar}
-          autoHideDuration={4000}
-          onClose={handleCloseSnackbar}
-          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-        >
-          <Alert
-            onClose={handleCloseSnackbar}
-            severity={errorMessage ? "error" : "success"} // Show success or error
-            sx={{ width: "100%" }}
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 3 }}
           >
-            {errorMessage ? errorMessage : "Signup successful! Redirecting..."}
-          </Alert>
-        </Snackbar>
-      </Box>
-    </Container></Box>
+            <TextField
+              margin="normal"
+              autoComplete="given-name"
+              name="username"
+              required
+              fullWidth
+              id="username"
+              label="Username"
+              autoFocus
+              value={formData.username}
+              onChange={handleChange}
+            />
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+
+            <FormControl variant="outlined" fullWidth margin="normal">
+              <InputLabel htmlFor="outlined-adornment-password">
+                Password *
+              </InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-password"
+                type={showPassword ? "text" : "password"}
+                name="password"
+                label="Password"
+                value={formData.password}
+                onChange={handleChange}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      onMouseUp={handleMouseUpPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+
+            <Button
+              disabled={loading}
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              {loading ? "Signing up..." : "Sign Up"}
+            </Button>
+            <Grid2 container justifyContent="center">
+              <Grid2 item>
+                <Link to="/auth/sign-in" variant="body2">
+                  <Typography color="secondary.dark">
+                    Already have an account? Sign in
+                  </Typography>
+                </Link>
+              </Grid2>
+            </Grid2>
+          </Box>
+          <Snackbar
+            open={openSnackbar}
+            autoHideDuration={4000}
+            onClose={handleCloseSnackbar}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          >
+            <Alert
+              onClose={handleCloseSnackbar}
+              severity={errorMessage ? "error" : "success"} // Show success or error
+              sx={{ width: "100%" }}
+            >
+              {errorMessage
+                ? errorMessage
+                : "Signup successful! Redirecting..."}
+            </Alert>
+          </Snackbar>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

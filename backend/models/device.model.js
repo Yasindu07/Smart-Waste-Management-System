@@ -7,11 +7,12 @@ const deviceSchema = new mongoose.Schema({
         enum: ["recyclable", "non-recyclable", "organic"],
     },
     wasteLevel: {
-        type: Number,
-        required: true,
+        organic: { type: Number, required: true },
+        recycle: { type: Number, required: true },
+        nonRecycle: { type: Number, required: true },
     },
-    user: {
-        type: Object, 
+    userId: {
+        type: String, 
         required: true,
     },
 }, { timestamps: true });

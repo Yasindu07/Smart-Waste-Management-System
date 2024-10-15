@@ -44,7 +44,26 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     dispatch(updateStart());
     e.preventDefault();
+    const phoneRegex = /^\d{10}$/; // Phone must be exactly 10 digits
+  const nicRegex = /^[0-9]{9}[vVxX]$|^[0-9]{12}$/; // Old or new NIC formats
     setLoading(true);
+    if (!formData.phone || !formData.address || !formData.nic) {
+      dispatch(updateFailure("All fields are required."));
+      setLoading(false);
+      return;
+    }
+
+    if (!phoneRegex.test(formData.phone)) {
+      dispatch(updateFailure("Phone number must be exactly 10 digits."));
+      setLoading(false);
+      return;
+    }
+
+    if (!nicRegex.test(formData.nic)) {
+      dispatch(updateFailure("Please enter a valid NIC."));
+      setLoading(false);
+      return;
+    }
     try {
       const res = await axios.put(
         `${API_URL}/user/completeprofile/${currentUser._id}`,

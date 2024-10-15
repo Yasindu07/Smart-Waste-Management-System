@@ -62,7 +62,7 @@ const sidebarItems = [
     label: 'Current Waste',
     path: '/dashboard/current-waste',
     icon: <DeleteSweepSharpIcon />,
-    role: 'manager',
+    role: 'admin',
   },
   {
     label: 'Special Collection',
