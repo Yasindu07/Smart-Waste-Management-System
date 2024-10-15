@@ -17,27 +17,27 @@ const ScheduleSchema = new mongoose.Schema({
   code: {
     type: String,
     required: true,
-    match: /^\d{6}$/, // Regex to match a 6-digit code
+    match: /^\d{6}$/, 
   },
   garbageCollectorId: {
-    type: String, // Can be adjusted to ObjectId if you have a separate garbage collector model
-    default: null, // Default to null if not provided
+    type: String, 
+    default: null, 
   },
   weight: {
-    type: Number, // Can store weight as a number (e.g., in kilograms)
-    default: null, // Default to null if not provided
+    type: Number, 
+    default: null, 
   },
   type: {
-    type: String, // Type of garbage (e.g., organic, recyclable, etc.)
-    default: null, // Default to null if not provided
+    type: String, 
+    default: null, 
   },
   special: {
     type: Boolean,
-    default: false, // Defaults to false unless explicitly set to true
+    default: false, 
   },
   truckNumber: {
-    type: String, // Type of garbage (e.g., organic, recyclable, etc.)
-    default: null, // Default to null if not provided
+    type: String, 
+    default: null, 
   },
 }, {
   timestamps: true,

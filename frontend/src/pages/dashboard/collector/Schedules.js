@@ -34,7 +34,7 @@ const StyledCard = styled(Card)(({ theme, status, special, datePassed }) => ({
   height: 'auto',
   minHeight: '60px',
   backgroundColor:
-    special // High priority: Blue if it's marked as special
+    special // Blue if it's marked as special
       ? '#007bff'
       : datePassed && status === 'notdone' // Red if overdue and not done
       ? '#f55d5d'
@@ -51,7 +51,7 @@ const StyledCard = styled(Card)(({ theme, status, special, datePassed }) => ({
     boxShadow: theme.shadows[6],
   },
   [theme.breakpoints.down('sm')]: {
-    minHeight: '30px', // Reduced height for smaller screens
+    minHeight: '30px', 
   },
 }));
 
@@ -60,9 +60,9 @@ const Schedules = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [expandedCard, setExpandedCard] = useState(null);
-  const [filterStatus, setFilterStatus] = useState('all'); // State for status filter
-  const [filterSpecial, setFilterSpecial] = useState(false); // State for special filter
-  const [filterDatePassed, setFilterDatePassed] = useState(false); // State for datePassed filter
+  const [filterStatus, setFilterStatus] = useState('all'); 
+  const [filterSpecial, setFilterSpecial] = useState(false); 
+  const [filterDatePassed, setFilterDatePassed] = useState(false); 
 
   const fetchSchedules = async () => {
     try {
@@ -88,11 +88,11 @@ const Schedules = () => {
     setExpandedCard(expandedCard === id ? null : id);
   };
 
-  // Filter logic
+  // Filter 
   const filteredSchedules = schedules.filter((schedule) => {
     const currentDate = new Date();
     const scheduleDate = new Date(schedule.time);
-    const datePassed = scheduleDate < currentDate; // Check if the date has passed
+    const datePassed = scheduleDate < currentDate; 
 
     const statusMatch =
       filterStatus === 'all' ||

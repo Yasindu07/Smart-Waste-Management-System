@@ -192,7 +192,7 @@ const Schedule = () => {
       </Button>
 
       {/* Main Container */}
-      <Container maxWidth="100%" sx={{ marginTop: { xs: '2rem', md: '4rem' }, marginBottom: '2rem' }}>
+      <Container maxWidth="100%" sx={{ marginTop: { xs: '0.1rem', md: '0.1rem' }, marginBottom: '2rem' }}>
         {/* Display Loading, Error, or Table */}
         {loading ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>

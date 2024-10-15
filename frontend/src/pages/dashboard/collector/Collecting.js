@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import { Box, Typography, TextField, Button, Alert, Grid, FormControl, FormGroup, FormControlLabel, Radio, RadioGroup, Chip } from '@mui/material';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-// import CustomAppBar from './CustomAppBar'; // Adjust path as needed
 import RecyclingIcon from '@mui/icons-material/Recycling';
 import GrassIcon from '@mui/icons-material/Grass';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import { useDispatch, useSelector } from "react-redux";
 
 const Collecting = () => {
-  const { id } = useParams(); // Get ID from URL parameters
-  const { currentUser } = useSelector((state) => state.user); // Get current user from Redux store
+  const { id } = useParams(); 
+  const { currentUser } = useSelector((state) => state.user); 
   const navigate = useNavigate();
   const [weight, setWeight] = useState('');
   const [selectedType, setSelectedType] = useState('');
@@ -35,7 +34,6 @@ const Collecting = () => {
       });
       setMessage('Schedule updated successfully!');
       
-      // Redirect to schedules page after success
       setTimeout(() => {
         navigate('/dashboard/assigned-schedule');
       }, 2000);
@@ -47,7 +45,6 @@ const Collecting = () => {
 
   return (
     <Box>
-      {/* <CustomAppBar name="Collecting" showBackButton={true} showMenu={true} /> */}
       <Box
         sx={{
           display: 'flex',
@@ -55,7 +52,7 @@ const Collecting = () => {
           alignItems: 'center',
           justifyContent: 'center',
           padding: { xs: '5px', md: '40px' },
-          minHeight: 'calc(100vh - 64px)', // Adjust for AppBar height
+          minHeight: 'calc(100vh - 64px)', 
           backgroundColor: '#f0f4f3',
         }}
       >
@@ -64,8 +61,8 @@ const Collecting = () => {
           onSubmit={handleSubmit}
           sx={{
             padding: { xs: 5, md: 10 },
-            width: '100%', // Full width for the form
-            maxWidth: '600px', // Limit max width
+            width: '100%', 
+            maxWidth: '600px', 
           }}
         >
           <Grid container spacing={2}>
@@ -146,14 +143,14 @@ const Collecting = () => {
     fontSize: '1.1rem',
     mb: -20,
     mt: 38,
-    // Styles for small screens (XS)
+   
     '@media (max-width: 600px)': {
-      width: '100%', // Full width on XS screens
+      width: '100%', 
     },
-    // Styles for larger screens
+   
     '@media (min-width: 600px)': {
-      width: 'auto', // Reduce width for larger screens
-      maxWidth: '300px', // Set a max width for the button
+      width: 'auto', 
+      maxWidth: '300px',
     },
   }}
 >

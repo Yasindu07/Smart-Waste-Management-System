@@ -5,7 +5,7 @@ import {
   updateSchedule,
   getScheduleById,
   deleteSchedule,
-} from "../controllers/schedule.controller.js"; // Adjust the path as necessary
+} from "../controllers/schedule.controller.js"; 
 
 const router = express.Router();
 

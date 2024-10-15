@@ -19,6 +19,7 @@ import {
   FormControl,
   CircularProgress,
   Alert,
+  Grid2
 } from '@mui/material';
 import { styled } from '@mui/system';
 
@@ -115,15 +116,15 @@ const EditSchedule = () => {
   }
 
   return (
-    <Container maxWidth="sm">
-      <Paper elevation={3} sx={{ padding: 4, marginTop: 4 }}>
+    <Container maxWidth="sm" >
+      <Paper elevation={3} sx={{ padding: 4, marginTop: 4,mb:16 }} >
         <Typography variant="h6" align="center" gutterBottom>
           Edit Schedule
         </Typography>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             {/* Time */}
-            <Grid item xs={12}>
+            <Grid2 item xs={12}>
               <TextField
                 label="Time"
                 type="datetime-local"
@@ -133,7 +134,7 @@ const EditSchedule = () => {
                 InputLabelProps={{ shrink: true }}
                 required
               />
-            </Grid>
+            </Grid2>
             {/* Address */}
             <Grid item xs={12}>
               <TextField

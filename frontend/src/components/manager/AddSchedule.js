@@ -30,7 +30,7 @@ const AddSchedule = ({ onClose }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Grid2 container spacing={2} columns={16}>
+      <Grid2 container spacing={2} columns={16} >
         {/* Header with Close Icon */}
         <Grid2
           size={{ xs: 16 }}

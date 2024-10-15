@@ -1,5 +1,3 @@
-// src/components/ShowRoute.js
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate ,Link} from 'react-router-dom';
 import {
@@ -20,6 +18,8 @@ import { MapContainer, TileLayer, Marker, Polyline } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import FitBounds from './FitBounds';
+
+
 // import CustomAppBar from './CustomAppBar';
 
 // Fix leaflet's default icon issue with webpack
@@ -63,7 +63,8 @@ const ShowRoute = () => {
   const [locationLoading, setLocationLoading] = useState(true);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  // OpenRouteService API Key (Replace with your own key securely)
+  // const ORS_API_KEY = process.env.REACT_APP_ORS_API_KEY;
+
   const ORS_API_KEY = '5b3ce3597851110001cf6248f4ef0527882745cebad6265966f7d059';
 
   // Custom Icons for Markers

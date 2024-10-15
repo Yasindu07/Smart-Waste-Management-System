@@ -5,7 +5,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Typography, CircularProgress, Alert, Button } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-// import CustomAppBar from './CustomAppBar'; // Adjust path as needed
 
 const QRScan = () => {
   const { id } = useParams();
@@ -29,7 +28,6 @@ const QRScan = () => {
         const schedule = res.data;
 
         if (scannedCode === schedule.code) {
-          // Navigate to Collecting page with schedule ID and scanned code
           navigate(`/dashboard/collecting/${id}/${scannedCode}`);
         } else {
           setMessage('Error: Scanned code does not match.');
@@ -50,7 +48,6 @@ const QRScan = () => {
 
   return (
     <Box> 
-      {/* <CustomAppBar name="Scan QR Code" showBackButton={true} showMenu={true} /> */}
       <Box sx={styles.container}>
         <Box sx={styles.scannerContainer}>
           <Box sx={styles.scanner}>
@@ -103,14 +100,14 @@ const QRScan = () => {
     fontSize: '1.1rem',
     mb: -10,
     mt: 30,
-    // Styles for small screens (XS)
+   
     '@media (max-width: 600px)': {
-      width: '100%', // Full width on XS screens
+      width: '100%', 
     },
-    // Styles for larger screens
+  
     '@media (min-width: 600px)': {
-      width: 'auto', // Reduce width for larger screens
-      maxWidth: '300px', // Set a max width for the button
+      width: 'auto', 
+      maxWidth: '300px', 
     },
   }}
 >
